@@ -1,11 +1,13 @@
 <?php
 
-namespace VendorName\ExamplePackage;
+declare(strict_types=1);
+
+namespace Yard\Models;
 
 use Illuminate\Support\Arr;
 use Roots\Acorn\Application;
 
-class Example
+class Model
 {
     /**
      * The application instance.
@@ -15,9 +17,10 @@ class Example
     protected $app;
 
     /**
-     * Create a new Example instance.
+     * Create a new Model instance.
      *
      * @param  \Roots\Acorn\Application  $app
+     *
      * @return void
      */
     public function __construct(Application $app)
@@ -33,7 +36,7 @@ class Example
     public function getQuote()
     {
         return Arr::random(
-            config('example.quotes')
+            config('model.quotes')
         );
     }
 }

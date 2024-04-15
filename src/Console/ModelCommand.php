@@ -1,18 +1,20 @@
 <?php
 
-namespace VendorName\ExamplePackage\Console;
+declare(strict_types=1);
+
+namespace Yard\Models\Console;
 
 use Roots\Acorn\Console\Commands\Command;
-use VendorName\ExamplePackage\Facades\Example;
+use Yard\Models\Facades\Model;
 
-class ExampleCommand extends Command
+class ModelCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'example';
+    protected $signature = 'model';
 
     /**
      * The console command description.
@@ -29,7 +31,7 @@ class ExampleCommand extends Command
     public function handle()
     {
         $this->info(
-            Example::getQuote()
+            Model::getQuote()
         );
     }
 }

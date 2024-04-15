@@ -1,10 +1,12 @@
 <?php
 
-namespace VendorName\ExamplePackage\Facades;
+declare(strict_types=1);
+
+namespace Yard\Models\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Example extends Facade
+class Model extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -13,6 +15,6 @@ class Example extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'Example';
+        return 'Model';
     }
 }

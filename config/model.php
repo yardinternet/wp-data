@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Example Package
+    | Model Package
     |--------------------------------------------------------------------------
     |
     | Configuration files provide a great way to customize your package.
