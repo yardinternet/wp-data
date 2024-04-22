@@ -9,7 +9,11 @@
 		}
 	},
 	"require": {
-		"php": "^8.0"
+		"php": "^8.0",
+		"spatie/laravel-data": "^4.5"
+	},
+	"suggest": {
+		"spatie/laravel-data": "To customize configuration settings, please install spatie/laravel-data directly. Run `php artisan vendor:publish --provider=\"Spatie\\LaravelData\\LaravelDataServiceProvider\" --tag=\"data-config\"` to publish the configuration file."
 	},
 	"extra": {
 		"acorn": {
