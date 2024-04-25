@@ -1,11 +1,11 @@
 {
-	"name": "yard/models",
+	"name": "yard/data",
 	"type": "package",
-	"description": "Models for WordPress.",
+	"description": "Powerful data objects for WordPress",
 	"license": "MIT",
 	"autoload": {
 		"psr-4": {
-			"Yard\\Models\\": "src/"
+			"Yard\\Data\\": "src/"
 		}
 	},
 	"require": {
@@ -14,10 +14,10 @@
 	"extra": {
 		"acorn": {
 			"providers": [
-				"Yard\\Models\\Providers\\ModelServiceProvider"
+				"Yard\\Data\\Providers\\DataServiceProvider"
 			],
 			"aliases": {
-				"Models": "Yard\\Models\\Facades\\Model"
+				"Data": "Yard\\Data\\Facades\\Data"
 			}
 		}
 	}
