@@ -10,6 +10,7 @@ use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\WithCastable;
 use Spatie\LaravelData\Data;
 use Yard\Data\Attributes\Meta;
+use Yard\Data\Attributes\MetaPrefix;
 use Yard\Data\Attributes\Terms;
 use Yard\Data\Enums\PostStatus;
 use Yard\Data\Mappers\PostPrefixMapper;
@@ -36,6 +37,14 @@ class PostData extends Data
         $this->loadTerms($id);
     }
 
+    private function metaPrefix(): string
+    {
+        $reflectionClass = new ReflectionClass($this);
+        $metaPrefixAttribute = $reflectionClass->getAttributes(MetaPrefix::class)[0] ?? null;
+
+        return $metaPrefixAttribute?->newInstance()->prefix ?? '';
+    }
+
     private function loadMeta(int $id): void
     {
         $reflectionClass = new ReflectionClass($this);
@@ -44,7 +53,7 @@ class PostData extends Data
             $metaAttributes = $property->getAttributes(Meta::class);
             foreach ($metaAttributes as $metaAttribute) {
                 $meta = $metaAttribute->newInstance();
-                $metaValue = $meta->getValue($id, $this->type, $property->name);
+                $metaValue = $meta->getValue($id, $property->name, $this->metaPrefix());
                 if (null !== $metaValue) {
                     $this->{$property->name} = $metaValue;
                 }
