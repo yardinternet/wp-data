@@ -13,7 +13,7 @@ class Meta
     {
     }
 
-    public function getValue(int $postID, $postType, $metaKey = null): mixed
+    public function getValue(int $postID, ?string $metaKey = null, string $prefix): mixed
     {
         if (isset($this->metaKey)) {
             return \get_field($this->metaKey, $postID);
@@ -22,7 +22,7 @@ class Meta
         $possibleKeys = [
             $metaKey,
             Str::snake($metaKey),
-            $postType . '_' . $metaKey,
+            $prefix . $metaKey,
         ];
 
         foreach ($possibleKeys as $key) {
