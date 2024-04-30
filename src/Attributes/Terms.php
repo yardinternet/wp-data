@@ -15,29 +15,32 @@ class Terms
     {
     }
 
-    public function getValue(int $postID, string $type, $taxonomy = null): mixed
+    public function getValue(int $postID, $taxonomy = null, $prefix): mixed
     {
         if (isset($this->taxonomy)) {
-            $terms = get_the_terms($postID, $this->taxonomy);
-
-            if (is_wp_error($terms)) {
-                return null;
-            }
-
-            return TermData::collect($terms, Collection::class);
+            $possibleTaxonomies = [
+                $this->taxonomy,
+            ];
+        } else {
+            $possibleTaxonomies = [
+                $taxonomy,
+                $prefix . $taxonomy,
+                Str::singular($prefix . $taxonomy),
+                Str::snake($taxonomy),
+                Str::singular(Str::snake($taxonomy)),
+                Str::singular($taxonomy),
+            ];
         }
-
-        $possibleTaxonomies = [
-            $taxonomy,
-            $type . '_' . $taxonomy,
-            Str::singular($type . '_' . $taxonomy),
-            Str::snake($taxonomy),
-            Str::singular($taxonomy),
-        ];
 
         foreach ($possibleTaxonomies as $tax) {
             if (taxonomy_exists($tax)) {
-                return TermData::collect(get_the_terms($postID, $tax), Collection::class);
+                $terms = get_the_terms($postID, $tax);
+
+                if (! is_array($terms)) {
+                    return null;
+                }
+
+                return TermData::collect($terms, Collection::class);
             }
         }
 
