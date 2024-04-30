@@ -9,12 +9,18 @@ use ReflectionClass;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\WithCastable;
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Normalizers\ArrayableNormalizer;
+use Spatie\LaravelData\Normalizers\ArrayNormalizer;
+use Spatie\LaravelData\Normalizers\JsonNormalizer;
+use Spatie\LaravelData\Normalizers\ModelNormalizer;
+use Spatie\LaravelData\Normalizers\ObjectNormalizer;
 use Yard\Data\Attributes\Meta;
 use Yard\Data\Attributes\MetaPrefix;
 use Yard\Data\Attributes\TaxonomyPrefix;
 use Yard\Data\Attributes\Terms;
 use Yard\Data\Enums\PostStatus;
 use Yard\Data\Mappers\PostPrefixMapper;
+use Yard\Data\Normalizers\WPPostNormalizer;
 
 #[MapInputName(PostPrefixMapper::class)]
 class PostData extends Data
@@ -86,34 +92,79 @@ class PostData extends Data
         }
     }
 
-    public static function fromPost(\WP_Post $post): static
+    public static function normalizers(): array
     {
-        return new static(
-            id: $post->ID,
-            author: UserData::from(get_user_by('id', $post->post_author)),
-            title: get_the_title($post->ID),
-            content: apply_filters('the_content', get_the_content(null, false, $post->ID)),
-            excerpt: get_the_excerpt($post->ID),
-            status: PostStatus::from($post->post_status),
-            date: CarbonImmutable::parse($post->post_date),
-            modified: CarbonImmutable::parse($post->post_modified),
-            type: $post->post_type,
-            slug: $post->post_name,
-        );
+        return [
+            ModelNormalizer::class,
+            ArrayableNormalizer::class,
+            ObjectNormalizer::class,
+            ArrayNormalizer::class,
+            JsonNormalizer::class,
+            WPPostNormalizer::class,
+        ];
     }
 
-    public function url(): string
+    public function id(): int
     {
-        return \get_permalink($this->id);
+        return $this->id;
     }
 
-    public function formatDate(string $format = ''): string
+    public function author(): UserData
+    {
+        return $this->author;
+    }
+
+    public function title(): string
+    {
+        return get_the_title($this->id);
+    }
+
+    public function content(): string
+    {
+        return apply_filters('the_content', get_the_content(null, false, $this->id));
+    }
+
+    public function excerpt(): string
+    {
+        return get_the_excerpt($this->id);
+    }
+
+    public function status(): string
+    {
+        return $this->status->value;
+    }
+
+    public function type(): string
+    {
+        return $this->type;
+    }
+
+    public function date(string $format = ''): string
     {
         if (empty($format)) {
             $format = \get_option('date_format');
         }
 
         return \date_i18n($format, $this->date->timestamp);
+    }
+
+    public function modified(string $format = ''): string
+    {
+        if (empty($format)) {
+            $format = \get_option('date_format');
+        }
+
+        return \date_i18n($format, $this->modified->timestamp);
+    }
+
+    public function slug(): string
+    {
+        return $this->slug;
+    }
+
+    public function url(): string
+    {
+        return \get_permalink($this->id);
     }
 
     public function thumbnail(string $size = 'medium_large'): string
