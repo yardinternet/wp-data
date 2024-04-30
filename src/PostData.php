@@ -18,12 +18,13 @@ use Yard\Data\Attributes\Meta;
 use Yard\Data\Attributes\MetaPrefix;
 use Yard\Data\Attributes\TaxonomyPrefix;
 use Yard\Data\Attributes\Terms;
+use Yard\Data\Contracts\PostDataInterface;
 use Yard\Data\Enums\PostStatus;
 use Yard\Data\Mappers\PostPrefixMapper;
 use Yard\Data\Normalizers\WPPostNormalizer;
 
 #[MapInputName(PostPrefixMapper::class)]
-class PostData extends Data
+class PostData extends Data implements PostDataInterface
 {
     public function __construct(
         #[MapInputName('ID')]
