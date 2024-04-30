@@ -11,6 +11,7 @@ use Spatie\LaravelData\Attributes\WithCastable;
 use Spatie\LaravelData\Data;
 use Yard\Data\Attributes\Meta;
 use Yard\Data\Attributes\MetaPrefix;
+use Yard\Data\Attributes\TaxonomyPrefix;
 use Yard\Data\Attributes\Terms;
 use Yard\Data\Enums\PostStatus;
 use Yard\Data\Mappers\PostPrefixMapper;
@@ -61,6 +62,14 @@ class PostData extends Data
         }
     }
 
+    private function taxonomyPrefix(): string
+    {
+        $reflectionClass = new ReflectionClass($this);
+        $termPrefixAttribute = $reflectionClass->getAttributes(TaxonomyPrefix::class)[0] ?? null;
+
+        return $termPrefixAttribute?->newInstance()->prefix ?? '';
+    }
+
     private function loadTerms(int $id): void
     {
         $reflectionClass = new ReflectionClass($this);
@@ -69,7 +78,7 @@ class PostData extends Data
             $termAttributes = $property->getAttributes(Terms::class);
             foreach ($termAttributes as $termAttribute) {
                 $term = $termAttribute->newInstance();
-                $termValue = $term->getValue($id, $this->type, $property->name);
+                $termValue = $term->getValue($id, $property->name, $this->taxonomyPrefix());
                 if (null !== $termValue) {
                     $this->{$property->name} = $termValue;
                 }
