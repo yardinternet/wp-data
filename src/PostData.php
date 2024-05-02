@@ -63,7 +63,7 @@ class PostData extends Data implements PostDataInterface
                 $meta = $metaAttribute->newInstance();
                 $metaValue = $meta->getValue($id, $property->name, $this->metaPrefix());
                 if (null !== $metaValue) {
-                    $this->{$property->name} = $metaValue;
+                    $property->setValue($this, $metaValue);
                 }
             }
         }
