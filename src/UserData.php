@@ -44,7 +44,7 @@ class UserData extends Data implements Castable
     public static function dataCastUsing(...$args): Cast
     {
         return new class implements Cast {
-            public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): mixed
+            public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?UserData
             {
                 $user = new \WP_User($value);
 
