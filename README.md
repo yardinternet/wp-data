@@ -2,6 +2,11 @@
 
 Powerful data objects for WordPress.
 
+## Requirements
+
+- [Sage](https://github.com/roots/sage) >= 10.0
+- [Acorn](https://github.com/roots/acorn) >= 3.0
+
 ## Installation
 
 You can install this package with Composer:
