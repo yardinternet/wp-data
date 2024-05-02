@@ -15,7 +15,7 @@ class Terms
     {
     }
 
-    public function getValue(int $postID, $taxonomy = null, $prefix): mixed
+    public function getValue(int $postID, string $taxonomy, string $prefix): mixed
     {
         if (isset($this->taxonomy)) {
             $possibleTaxonomies = [
