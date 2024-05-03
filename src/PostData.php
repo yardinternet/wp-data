@@ -37,7 +37,7 @@ class PostData extends Data implements PostDataInterface
         public PostStatus $status,
         public CarbonImmutable $date,
         public CarbonImmutable $modified,
-        public string $type,
+        public string $postType,
         #[MapInputName('post_name')]
         public string $slug,
     ) {
@@ -56,7 +56,7 @@ class PostData extends Data implements PostDataInterface
             status: PostStatus::from($post->post_status),
             date: CarbonImmutable::createFromTimestamp($post->post_date),
             modified: CarbonImmutable::createFromTimestamp($post->post_modified),
-            type: $post->post_type,
+            postType: $post->post_type,
             slug: $post->post_name,
         );
     }
@@ -162,9 +162,9 @@ class PostData extends Data implements PostDataInterface
         return $this->status->value;
     }
 
-    public function type(): string
+    public function postType(): string
     {
-        return $this->type;
+        return $this->postType;
     }
 
     public function date(string $format = ''): string
