@@ -199,4 +199,9 @@ class PostData extends Data implements PostDataInterface
     {
         return \get_the_post_thumbnail_url($this->id, $size) ?: '';
     }
+
+    public function hasThumbnail(): bool
+    {
+        return \has_post_thumbnail($this->id);
+    }
 }
