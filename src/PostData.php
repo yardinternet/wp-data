@@ -40,6 +40,7 @@ class PostData extends Data implements PostDataInterface
         public string $postType,
         #[MapInputName('post_name')]
         public string $slug,
+        public ?ImageData $thumbnail,
     ) {
         $this->loadMeta($id);
         $this->loadTerms($id);
@@ -58,6 +59,7 @@ class PostData extends Data implements PostDataInterface
             modified: CarbonImmutable::createFromTimestamp($post->post_modified),
             postType: $post->post_type,
             slug: $post->post_name,
+            thumbnail: get_post_thumbnail_id($post->ID) ? ImageData::from(get_post_thumbnail_id($post->ID)) : null,
         );
     }
 
@@ -190,18 +192,18 @@ class PostData extends Data implements PostDataInterface
         return $this->slug;
     }
 
-    public function url(): string
+    public function thumbnail(): ?ImageData
     {
-        return \get_permalink($this->id);
-    }
-
-    public function thumbnail(string $size = 'medium_large'): string
-    {
-        return \get_the_post_thumbnail_url($this->id, $size) ?: '';
+        return $this->thumbnail;
     }
 
     public function hasThumbnail(): bool
     {
-        return \has_post_thumbnail($this->id);
+        return null !== $this->thumbnail;
+    }
+
+    public function url(): string
+    {
+        return \get_permalink($this->id);
     }
 }

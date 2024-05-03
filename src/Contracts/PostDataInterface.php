@@ -6,6 +6,7 @@ namespace Yard\Data\Contracts;
 
 use Carbon\CarbonImmutable;
 use Yard\Data\Enums\PostStatus;
+use Yard\Data\ImageData;
 use Yard\Data\UserData;
 
 interface PostDataInterface
@@ -21,6 +22,7 @@ interface PostDataInterface
         CarbonImmutable $modified,
         string $postType,
         string $slug,
+        ?ImageData $thumbnail,
     );
 
     public function id(): int;
@@ -33,5 +35,5 @@ interface PostDataInterface
     public function modified(string $format): string;
     public function postType(): string;
     public function slug(): string;
-    public function thumbnail(): string;
+    public function thumbnail(): ?ImageData;
 }
