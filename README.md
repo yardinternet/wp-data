@@ -82,6 +82,22 @@ global $post;
 $postData = \App\Data\VacancyData::from($post);
 ```
 
+#### Configuring the returning Instance
+
+Every time you call `Yard\Data\PostData::from($post)` you receive an instance of `Yard\Data\PostData`.
+
+If you choose to create a new data class for your custom post type, you can have this class be returned for all instances of that post type.
+
+Just use the config file and map all custom posts and it's classes:
+
+```php
+'post_types' => [
+  'vacancy' => App\Data\VacancyData::class,
+  'employee' => App\Data\EmployeeData::class,
+```
+
+Now every time you call `Yard\Data\PostData::from($post)` on a custom post type the mapped instance will be returned.
+
 ### Meta Fields
 
 Adding a meta field with a meta_key of `vacancy_email` to your VacancyData looks like this:

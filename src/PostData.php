@@ -45,6 +45,33 @@ class PostData extends Data implements PostDataInterface
         $this->loadTerms($id);
     }
 
+    public static function fromPost(\WP_Post $post): PostData
+    {
+        return new (self::dataClass($post))(
+            id: $post->ID,
+            author: UserData::fromUser(get_userdata($post->post_author)),
+            title: $post->post_title,
+            content: $post->post_content,
+            excerpt: $post->post_excerpt,
+            status: PostStatus::from($post->post_status),
+            date: CarbonImmutable::createFromTimestamp($post->post_date),
+            modified: CarbonImmutable::createFromTimestamp($post->post_modified),
+            type: $post->post_type,
+            slug: $post->post_name,
+        );
+    }
+
+    private static function dataClass(\WP_Post $post): string
+    {
+        $classes = config('yard-data.post_types', []);
+
+        if (array_key_exists($post->post_type, $classes)) {
+            return $classes[$post->post_type];
+        }
+
+        return self::class;
+    }
+
     private function metaPrefix(): string
     {
         $reflectionClass = new ReflectionClass($this);
