@@ -47,8 +47,8 @@ $postData = \Yard\Data\PostData::from(
         'excerpt' => 'This is a test post.',
         'status' => 'publish',
         'date' => '2021-01-01 00:00:00',
-        'modified' => '2021-01-01 00:00:00'	,
-        'type' => 'post',
+        'modified' => '2021-01-01 00:00:00',
+        'postType' => 'post',
         'slug'=> 'hello-world',
     ]
 );

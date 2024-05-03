@@ -19,7 +19,7 @@ interface PostDataInterface
         PostStatus $status,
         CarbonImmutable $date,
         CarbonImmutable $modified,
-        string $type,
+        string $postType,
         string $slug,
     );
 
@@ -31,7 +31,7 @@ interface PostDataInterface
     public function status(): string;
     public function date(string $format): string;
     public function modified(string $format): string;
-    public function type(): string;
+    public function postType(): string;
     public function slug(): string;
     public function thumbnail(): string;
 }
