@@ -59,7 +59,7 @@ class PostData extends Data implements PostDataInterface
             modified: CarbonImmutable::createFromFormat('Y-m-d H:i:s', $post->post_modified),
             postType: $post->post_type,
             slug: $post->post_name,
-            thumbnail: get_post_thumbnail_id($post->ID) ? ImageData::from(get_post_thumbnail_id($post->ID)) : null,
+            thumbnail: get_post_thumbnail_id($post->ID) ? new ImageData(get_post_thumbnail_id($post->ID)) : null,
         );
     }
 

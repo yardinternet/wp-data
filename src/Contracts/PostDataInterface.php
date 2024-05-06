@@ -34,6 +34,7 @@ interface PostDataInterface
     public function date(string $format): string;
     public function modified(string $format): string;
     public function postType(): string;
-    public function slug(): string;
     public function thumbnail(): ?ImageData;
+    public function hasThumbnail(): bool;
+    public function slug(): string;
 }
