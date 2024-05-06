@@ -116,7 +116,9 @@ class PostData extends Data implements PostDataInterface
                 $term = $termAttribute->newInstance();
                 $termValue = $term->getValue($id, $property->name, $this->taxonomyPrefix());
                 if (null !== $termValue) {
-                    $this->{$property->name} = $termValue;
+                    $property->setValue($this, $termValue);
+                } else {
+                    $property->setValue($this, collect());
                 }
             }
         }
