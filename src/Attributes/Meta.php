@@ -16,7 +16,11 @@ class Meta
     public function getValue(int $postID, string $metaKey, string $prefix): mixed
     {
         if (isset($this->metaKey)) {
-            return \get_field($this->metaKey, $postID);
+            if ($value = \get_field($this->metaKey, $postID)) {
+                return $value;
+            } else {
+                return null;
+            }
         }
 
         $possibleKeys = [
