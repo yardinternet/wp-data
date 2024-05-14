@@ -48,7 +48,7 @@ class PostData extends Data implements PostDataInterface
 
     public static function fromPost(\WP_Post $post): PostData
     {
-        return new (self::dataClass($post))(
+        return new (self::dataClass($post->post_type))(
             id: $post->ID,
             author: UserData::fromUser(get_userdata($post->post_author)),
             title: $post->post_title,
@@ -63,12 +63,29 @@ class PostData extends Data implements PostDataInterface
         );
     }
 
-    private static function dataClass(\WP_Post $post): string
+    public static function fromCorcel(\Corcel\Model $post): PostData
+    {
+        return new (self::dataClass($post->post_type))(
+            id: $post->ID,
+            author: UserData::fromUser(get_userdata($post->post_author)),
+            title: $post->post_title,
+            content: $post->post_content,
+            excerpt: $post->post_excerpt,
+            status: PostStatus::from($post->post_status),
+            date: CarbonImmutable::createFromFormat('Y-m-d H:i:s', $post->post_date),
+            modified: CarbonImmutable::createFromFormat('Y-m-d H:i:s', $post->post_modified),
+            postType: $post->post_type,
+            slug: $post->post_name,
+            thumbnail: get_post_thumbnail_id($post->ID) ? new ImageData(get_post_thumbnail_id($post->ID)) : null,
+        );
+    }
+
+    private static function dataClass(string $postType): string
     {
         $classes = config('yard-data.post_types', []);
 
-        if (array_key_exists($post->post_type, $classes)) {
-            return $classes[$post->post_type];
+        if (array_key_exists($postType, $classes)) {
+            return $classes[$postType];
         }
 
         return self::class;
