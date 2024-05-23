@@ -50,7 +50,7 @@ class PostData extends Data implements PostDataInterface
     {
         return new (self::dataClass($post->post_type))(
             id: $post->ID,
-            author: UserData::fromUser(get_userdata($post->post_author)),
+            author: false !== get_userdata($post->post_author) ? UserData::fromUser(get_userdata($post->post_author)) : null,
             title: $post->post_title,
             content: $post->post_content,
             excerpt: $post->post_excerpt,
@@ -67,7 +67,7 @@ class PostData extends Data implements PostDataInterface
     {
         return new (self::dataClass($post->post_type))(
             id: $post->ID,
-            author: UserData::fromUser(get_userdata($post->post_author)),
+            author: false !== get_userdata($post->post_author) ? UserData::fromUser(get_userdata($post->post_author)) : null,
             title: $post->post_title,
             content: $post->post_content,
             excerpt: $post->post_excerpt,
