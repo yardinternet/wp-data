@@ -21,7 +21,6 @@ You can publish the config file with:
 $ wp acorn vendor:publish --provider="Yard\Data\Providers\DataServiceProvider"
 ```
 
-
 ## Usage
 
 ### PostData
