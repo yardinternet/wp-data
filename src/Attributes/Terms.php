@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Yard\Data\TermData;
 
-#[\Attribute(\ATTRIBUTE::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Terms
 {
     public function __construct(private ?string $taxonomy = null)

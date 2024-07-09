@@ -7,3 +7,8 @@ parameters:
     paths:
         - src
     tmpDir: build/phpstan
+    ignoreErrors:
+        -
+            message: '#Access to an undefined property Corcel\\Model\\Post[a-zA-Z0-9::a-zA-Z]#'
+        -
+            message: '#Function get_field not found.#'
