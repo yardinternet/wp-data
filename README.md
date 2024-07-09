@@ -149,6 +149,17 @@ class VacancyData extends PostData
 }
 ```
 
+It doesn’t matter if your meta keys are in snake_case and your attributes are in camelCase. For instance, let’s say your meta key is `vacancy_members_only`:
+
+```php
+#[MetaPrefix(prefix: 'vacancy')]
+class VacancyData extends PostData
+{
+    #[Meta]
+    public bool $membersOnly;
+}
+```
+
 ### Taxonomy Terms
 
 #### Adding terms to your Data Object

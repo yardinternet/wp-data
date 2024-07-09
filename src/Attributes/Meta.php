@@ -27,6 +27,7 @@ class Meta
             $metaKey,
             Str::snake($metaKey),
             $prefix . $metaKey,
+            $prefix . Str::snake($metaKey),
         ];
 
         foreach ($possibleKeys as $key) {
