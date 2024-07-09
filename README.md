@@ -197,6 +197,8 @@ or:
 public Collection $vacancyLocations;
 ```
 
+#### The TaxonomyPrefix Class Attribute
+
 If all of your taxonomies are prefixed with the same prefix you can use the TaxonomyPrefix attribute:
 
 ```php
