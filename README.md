@@ -99,6 +99,8 @@ Now every time you call `Yard\Data\PostData::from($post)` on a custom post type 
 
 ### Meta Fields
 
+#### Using the Meta Attribute
+
 Adding a meta field with a meta_key of `vacancy_email` to your VacancyData looks like this:
 
 ```php
@@ -120,6 +122,15 @@ This approach is functionally equivalent to using:
 #[Meta]
 public string $vacancyEmail;
 ```
+
+You can also specify any available Data Object, and the meta value will be cast to that Data Object:
+
+```php
+#[Meta]
+public EmployeeData $vacancyEmployee;
+```
+
+#### The MetaPrefix Class Attribute
 
 If all of your meta fields are prefixed with the same prefix you can use the MetaPrefix attribute:
 
@@ -185,7 +196,6 @@ use Yard\Data\Attributes\TaxonomyPrefix;
 use Yard\Data\Attributes\Terms;
 use Yard\Data\PostData;
 
-#[MetaPrefix(prefix: 'vacancy')]
 #[TaxonomyPrefix(prefix: 'vacancy')]
 class VacancyData extends PostData
 {

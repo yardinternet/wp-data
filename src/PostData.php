@@ -104,11 +104,15 @@ class PostData extends Data implements PostDataInterface
         $reflectionClass = new ReflectionClass($this);
         $properties = $reflectionClass->getProperties();
         foreach ($properties as $property) {
+            $propertyType = $property->getType()?->getName();
             $metaAttributes = $property->getAttributes(Meta::class);
             foreach ($metaAttributes as $metaAttribute) {
                 $meta = $metaAttribute->newInstance();
                 $metaValue = $meta->getValue($id, $property->name, $this->metaPrefix());
                 if (null !== $metaValue) {
+                    if ('Spatie\LaravelData\Data' === $propertyType || is_subclass_of($propertyType, 'Spatie\LaravelData\Data')) {
+                        $metaValue = $propertyType::from($metaValue);
+                    }
                     $property->setValue($this, $metaValue);
                 }
             }
