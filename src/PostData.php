@@ -4,24 +4,25 @@ declare(strict_types=1);
 
 namespace Yard\Data;
 
-use Carbon\CarbonImmutable;
 use ReflectionClass;
+use ReflectionNamedType;
+use Carbon\CarbonImmutable;
+use Spatie\LaravelData\Data;
+use Yard\Data\Attributes\Meta;
+use Yard\Data\Attributes\Terms;
+use Yard\Data\Enums\PostStatus;
+use Yard\Data\Attributes\MetaPrefix;
+use Yard\Data\Mappers\PostPrefixMapper;
+use Yard\Data\Attributes\TaxonomyPrefix;
+use Yard\Data\Contracts\PostDataInterface;
+use Yard\Data\Normalizers\WPPostNormalizer;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\WithCastable;
-use Spatie\LaravelData\Data;
-use Spatie\LaravelData\Normalizers\ArrayableNormalizer;
-use Spatie\LaravelData\Normalizers\ArrayNormalizer;
 use Spatie\LaravelData\Normalizers\JsonNormalizer;
+use Spatie\LaravelData\Normalizers\ArrayNormalizer;
 use Spatie\LaravelData\Normalizers\ModelNormalizer;
 use Spatie\LaravelData\Normalizers\ObjectNormalizer;
-use Yard\Data\Attributes\Meta;
-use Yard\Data\Attributes\MetaPrefix;
-use Yard\Data\Attributes\TaxonomyPrefix;
-use Yard\Data\Attributes\Terms;
-use Yard\Data\Contracts\PostDataInterface;
-use Yard\Data\Enums\PostStatus;
-use Yard\Data\Mappers\PostPrefixMapper;
-use Yard\Data\Normalizers\WPPostNormalizer;
+use Spatie\LaravelData\Normalizers\ArrayableNormalizer;
 
 #[MapInputName(PostPrefixMapper::class)]
 class PostData extends Data implements PostDataInterface
@@ -50,7 +51,7 @@ class PostData extends Data implements PostDataInterface
     {
         return new (self::dataClass($post->post_type))(
             id: $post->ID,
-            author: false !== get_userdata($post->post_author) ? UserData::fromUser(get_userdata($post->post_author)) : null,
+            author: false !== get_userdata((int) $post->post_author) ? UserData::fromUser(get_userdata((int) $post->post_author)) : null,
             title: $post->post_title,
             content: $post->post_content,
             excerpt: $post->post_excerpt,
@@ -63,7 +64,7 @@ class PostData extends Data implements PostDataInterface
         );
     }
 
-    public static function fromCorcel(\Corcel\Model $post): PostData
+    public static function fromCorcel(\Corcel\Model\Post $post): PostData
     {
         return new (self::dataClass($post->post_type))(
             id: $post->ID,
@@ -104,14 +105,18 @@ class PostData extends Data implements PostDataInterface
         $reflectionClass = new ReflectionClass($this);
         $properties = $reflectionClass->getProperties();
         foreach ($properties as $property) {
-            $propertyType = $property->getType()?->getName();
+            $propertyType = $property->getType();
+            $propertyTypeName = null;
+            if ($propertyType instanceof ReflectionNamedType) {
+                $propertyTypeName = $propertyType->getName();
+            }
             $metaAttributes = $property->getAttributes(Meta::class);
             foreach ($metaAttributes as $metaAttribute) {
                 $meta = $metaAttribute->newInstance();
                 $metaValue = $meta->getValue($id, $property->name, $this->metaPrefix());
-                if (null !== $metaValue) {
-                    if ('Spatie\LaravelData\Data' === $propertyType || is_subclass_of($propertyType, 'Spatie\LaravelData\Data')) {
-                        $metaValue = $propertyType::from($metaValue);
+                if (null !== $metaValue && null !== $propertyTypeName) {
+                    if ('Spatie\LaravelData\Data' === $propertyTypeName || is_subclass_of($propertyTypeName, 'Spatie\LaravelData\Data')) {
+                        $metaValue = $propertyTypeName::from($metaValue);
                     }
                     $property->setValue($this, $metaValue);
                 }

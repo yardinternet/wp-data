@@ -6,7 +6,7 @@ namespace Yard\Data\Attributes;
 
 use Illuminate\Support\Str;
 
-#[\Attribute(\ATTRIBUTE::TARGET_PROPERTY)]
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Meta
 {
     public function __construct(private ?string $metaKey = null)
