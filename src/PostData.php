@@ -88,7 +88,7 @@ class PostData extends Data implements PostDataInterface
     {
         $classes = config('yard-data.post_types', []);
 
-        if (array_key_exists($postType, $classes)) {
+        if (is_array($classes) && array_key_exists($postType, $classes)) {
             return $classes[$postType];
         }
 
@@ -203,10 +203,17 @@ class PostData extends Data implements PostDataInterface
         return $this->postType;
     }
 
+    private function defaultDateFormat(): string
+    {
+        $dateFormat = \get_option('date_format');
+
+        return is_string($dateFormat) ? $dateFormat : '';
+    }
+
     public function date(string $format = ''): string
     {
-        if (empty($format)) {
-            $format = \get_option('date_format');
+        if ('' === $format) {
+            $format = $this->defaultDateFormat();
         }
 
         return \date_i18n($format, (int) $this->date->timestamp);
@@ -214,8 +221,8 @@ class PostData extends Data implements PostDataInterface
 
     public function modified(string $format = ''): string
     {
-        if (empty($format)) {
-            $format = \get_option('date_format');
+        if ('' === $format) {
+            $format = $this->defaultDateFormat();
         }
 
         return \date_i18n($format, (int) $this->modified->timestamp);

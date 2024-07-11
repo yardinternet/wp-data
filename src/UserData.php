@@ -11,6 +11,7 @@ use Spatie\LaravelData\Contracts\BaseData;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
+use stdClass;
 use Yard\Data\Mappers\UserPrefixMapper;
 
 #[MapInputName(UserPrefixMapper::class)]
@@ -54,6 +55,10 @@ class UserData extends Data implements Castable
              */
             public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?UserData
             {
+                if (! is_int($value) && ! is_string($value) && ! $value instanceof \WP_User && ! $value instanceof stdClass) {
+                    return null;
+                }
+
                 $user = new \WP_User($value);
 
                 if (0 === $user->ID) {
