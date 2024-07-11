@@ -7,6 +7,7 @@ namespace Yard\Data;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Casts\Cast;
 use Spatie\LaravelData\Casts\Castable;
+use Spatie\LaravelData\Contracts\BaseData;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Support\Creation\CreationContext;
 use Spatie\LaravelData\Support\DataProperty;
@@ -41,9 +42,16 @@ class UserData extends Data implements Castable
         );
     }
 
-    public static function dataCastUsing(...$args): Cast
+    /**
+     * @param array<mixed> ...$args
+     */
+    public static function dataCastUsing(array ...$args): Cast
     {
-        return new class implements Cast {
+        return new /** @template TData of BaseData */ class () implements Cast {
+            /**
+             * @param array<array-key, mixed> $properties
+             * @param CreationContext<TData> $context
+             */
             public function cast(DataProperty $property, mixed $value, array $properties, CreationContext $context): ?UserData
             {
                 $user = new \WP_User($value);
@@ -65,12 +73,12 @@ class UserData extends Data implements Castable
         };
     }
 
-    public function can($cap)
+    public function can(string $cap): bool
     {
         return \user_can($this->id, $cap);
     }
 
-    public function hasRole($role)
+    public function hasRole(string $role): bool
     {
         return \user_can($this->id, $role);
     }
