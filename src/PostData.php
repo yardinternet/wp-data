@@ -173,7 +173,7 @@ class PostData extends Data implements PostDataInterface
         return $this->id;
     }
 
-    public function author(): UserData
+    public function author(): ?UserData
     {
         return $this->author;
     }
