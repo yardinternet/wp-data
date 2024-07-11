@@ -1,5 +1,7 @@
 # Yard Data Objects
 
+[![PHPStan](https://github.com/yardinternet/yard-data/actions/workflows/phpstan.yml/badge.svg)](https://github.com/yardinternet/yard-data/actions/workflows/phpstan.yml)
+
 Powerful data objects for WordPress.
 
 ## Requirements
