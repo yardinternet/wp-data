@@ -150,6 +150,9 @@ class PostData extends Data implements PostDataInterface
         }
     }
 
+    /**
+     * @return array<int, class-string<\Spatie\LaravelData\Normalizers\Normalizer>>
+     */
     public static function normalizers(): array
     {
         return [
