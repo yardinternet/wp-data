@@ -81,6 +81,9 @@ class PostData extends Data implements PostDataInterface
         );
     }
 
+    /**
+     * @return class-string<\Yard\Data\PostData>
+     */
     private static function dataClass(string $postType): string
     {
         $classes = config('yard-data.post_types', []);
@@ -206,7 +209,7 @@ class PostData extends Data implements PostDataInterface
             $format = \get_option('date_format');
         }
 
-        return \date_i18n($format, $this->date->timestamp);
+        return \date_i18n($format, (int) $this->date->timestamp);
     }
 
     public function modified(string $format = ''): string
@@ -215,7 +218,7 @@ class PostData extends Data implements PostDataInterface
             $format = \get_option('date_format');
         }
 
-        return \date_i18n($format, $this->modified->timestamp);
+        return \date_i18n($format, (int) $this->modified->timestamp);
     }
 
     public function slug(): string
@@ -235,6 +238,8 @@ class PostData extends Data implements PostDataInterface
 
     public function url(): string
     {
-        return \get_permalink($this->id);
+        $permalink = \get_permalink($this->id);
+
+        return $permalink ? $permalink : '';
     }
 }
