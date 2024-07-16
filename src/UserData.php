@@ -48,7 +48,7 @@ class UserData extends Data implements Castable
     {
         return new
         /** @template TData of \Spatie\LaravelData\Contracts\BaseData */
-        class () implements Cast {
+        class() implements Cast {
             /**
              * @param array<array-key, mixed> $properties
              * @param CreationContext<TData> $context

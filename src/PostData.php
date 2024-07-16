@@ -4,27 +4,27 @@ declare(strict_types=1);
 
 namespace Yard\Data;
 
-use ReflectionClass;
-use Corcel\Model\Post;
-use ReflectionNamedType;
 use Carbon\CarbonImmutable;
-use Spatie\LaravelData\Data;
-use Yard\Data\Attributes\Meta;
-use Yard\Data\Attributes\Terms;
-use Yard\Data\Enums\PostStatus;
-use Yard\Data\Attributes\MetaPrefix;
-use Yard\Data\Mappers\PostPrefixMapper;
-use Yard\Data\Attributes\TaxonomyPrefix;
-use Yard\Data\Contracts\PostDataInterface;
-use Yard\Data\Normalizers\WPPostNormalizer;
-use Spatie\LaravelData\Normalizers\Normalizer;
+use Corcel\Model\Post;
+use ReflectionClass;
+use ReflectionNamedType;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\WithCastable;
-use Spatie\LaravelData\Normalizers\JsonNormalizer;
-use Spatie\LaravelData\Normalizers\ArrayNormalizer;
-use Spatie\LaravelData\Normalizers\ModelNormalizer;
-use Spatie\LaravelData\Normalizers\ObjectNormalizer;
+use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Normalizers\ArrayableNormalizer;
+use Spatie\LaravelData\Normalizers\ArrayNormalizer;
+use Spatie\LaravelData\Normalizers\JsonNormalizer;
+use Spatie\LaravelData\Normalizers\ModelNormalizer;
+use Spatie\LaravelData\Normalizers\Normalizer;
+use Spatie\LaravelData\Normalizers\ObjectNormalizer;
+use Yard\Data\Attributes\Meta;
+use Yard\Data\Attributes\MetaPrefix;
+use Yard\Data\Attributes\TaxonomyPrefix;
+use Yard\Data\Attributes\Terms;
+use Yard\Data\Contracts\PostDataInterface;
+use Yard\Data\Enums\PostStatus;
+use Yard\Data\Mappers\PostPrefixMapper;
+use Yard\Data\Normalizers\WPPostNormalizer;
 
 #[MapInputName(PostPrefixMapper::class)]
 class PostData extends Data implements PostDataInterface

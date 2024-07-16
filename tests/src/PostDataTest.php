@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 beforeEach(function () {
     $this->postData = new Yard\Data\PostData(
         id: 1,
