@@ -247,8 +247,6 @@ class PostData extends Data implements PostDataInterface
 
     public function url(): string
     {
-        $permalink = \get_permalink($this->id);
-
-        return $permalink ? $permalink : '';
+        return \get_permalink($this->id) ?: '';
     }
 }
