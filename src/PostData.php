@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yard\Data;
 
 use ReflectionClass;
+use Corcel\Model\Post;
 use ReflectionNamedType;
 use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Data;
@@ -16,6 +17,7 @@ use Yard\Data\Mappers\PostPrefixMapper;
 use Yard\Data\Attributes\TaxonomyPrefix;
 use Yard\Data\Contracts\PostDataInterface;
 use Yard\Data\Normalizers\WPPostNormalizer;
+use Spatie\LaravelData\Normalizers\Normalizer;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\WithCastable;
 use Spatie\LaravelData\Normalizers\JsonNormalizer;
@@ -64,7 +66,7 @@ class PostData extends Data implements PostDataInterface
         );
     }
 
-    public static function fromCorcel(\Corcel\Model\Post $post): PostData
+    public static function fromCorcel(Post $post): PostData
     {
         return new (self::dataClass($post->post_type))(
             id: $post->ID,
@@ -82,7 +84,7 @@ class PostData extends Data implements PostDataInterface
     }
 
     /**
-     * @return class-string<\Yard\Data\PostData>
+     * @return class-string<self>
      */
     private static function dataClass(string $postType): string
     {
@@ -154,7 +156,7 @@ class PostData extends Data implements PostDataInterface
     }
 
     /**
-     * @return array<int, class-string<\Spatie\LaravelData\Normalizers\Normalizer>>
+     * @return array<int, class-string<Normalizer>>
      */
     public static function normalizers(): array
     {
