@@ -1,3 +1,4 @@
 .phpunit.cache
+.php-cs-fixer.cache
 vendor
 build
