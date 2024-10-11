@@ -25,6 +25,7 @@ class Terms
             $possibleTaxonomies = [
                 $taxonomy,
                 $prefix . $taxonomy,
+                $prefix . Str::snake($taxonomy),
                 Str::singular($prefix . $taxonomy),
                 Str::snake($taxonomy),
                 Str::singular(Str::snake($taxonomy)),
