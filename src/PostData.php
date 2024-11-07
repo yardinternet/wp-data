@@ -94,7 +94,7 @@ class PostData extends Data implements PostDataInterface
             return $classes[$postType];
         }
 
-        return self::class;
+        return static::class;
     }
 
     private function metaPrefix(): string
