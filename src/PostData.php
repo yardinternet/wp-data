@@ -190,9 +190,19 @@ class PostData extends Data implements PostDataInterface
         return apply_filters('the_content', get_the_content(null, false, $this->id));
     }
 
-    public function excerpt(): string
+    public function excerpt(int $count = 0): string
     {
-        return get_the_excerpt($this->id);
+        if (0 === $count) {
+            return get_the_excerpt($this->id);
+        }
+
+        add_filter('excerpt_length', fn () => $count, PHP_INT_MAX);
+
+        $excerpt = get_the_excerpt($this->id);
+
+        remove_all_filters('excerpt_length', PHP_INT_MAX);
+
+        return $excerpt;
     }
 
     public function status(): string
