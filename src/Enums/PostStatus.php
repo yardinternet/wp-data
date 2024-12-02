@@ -13,4 +13,5 @@ enum PostStatus: string
     case PRIVATE = 'private';
     case TRASH = 'trash';
     case AUTO = 'auto-draft';
+    case INHERIT = 'inherit';
 }
