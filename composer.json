@@ -3,7 +3,6 @@
   "type": "package",
   "description": "Powerful data objects for WordPress",
   "license": "MIT",
-  "version": "1.0.6",
   "config": {
     "sort-packages": true,
     "allow-plugins": {
