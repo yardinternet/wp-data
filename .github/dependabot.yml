@@ -20,8 +20,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    reviewers:
-      - yardinternet/wordpress-backend
     groups:
       composer:
         patterns:
