@@ -9,15 +9,15 @@ use Spatie\LaravelData\Data;
 
 class TermData extends Data
 {
-    #[MapInputName('term_id')]
-    public int $id;
-    public string $name;
-    public string $slug;
+	#[MapInputName('term_id')]
+	public int $id;
+	public string $name;
+	public string $slug;
 
-    public static function fromTerm(\WP_Term $term): TermData
-    {
-        return self::from(
-            $term->to_array()
-        );
-    }
+	public static function fromTerm(\WP_Term $term): TermData
+	{
+		return self::from(
+			$term->to_array()
+		);
+	}
 }

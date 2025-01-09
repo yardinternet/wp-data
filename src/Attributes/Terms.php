@@ -11,40 +11,40 @@ use Yard\Data\TermData;
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Terms
 {
-    public function __construct(private ?string $taxonomy = null)
-    {
-    }
+	public function __construct(private ?string $taxonomy = null)
+	{
+	}
 
-    public function getValue(int $postID, string $taxonomy, string $prefix): mixed
-    {
-        if (isset($this->taxonomy)) {
-            $possibleTaxonomies = [
-                $this->taxonomy,
-            ];
-        } else {
-            $possibleTaxonomies = [
-                $taxonomy,
-                $prefix . $taxonomy,
-                $prefix . Str::snake($taxonomy),
-                Str::singular($prefix . $taxonomy),
-                Str::snake($taxonomy),
-                Str::singular(Str::snake($taxonomy)),
-                Str::singular($taxonomy),
-            ];
-        }
+	public function getValue(int $postID, string $taxonomy, string $prefix): mixed
+	{
+		if (isset($this->taxonomy)) {
+			$possibleTaxonomies = [
+				$this->taxonomy,
+			];
+		} else {
+			$possibleTaxonomies = [
+				$taxonomy,
+				$prefix . $taxonomy,
+				$prefix . Str::snake($taxonomy),
+				Str::singular($prefix . $taxonomy),
+				Str::snake($taxonomy),
+				Str::singular(Str::snake($taxonomy)),
+				Str::singular($taxonomy),
+			];
+		}
 
-        foreach ($possibleTaxonomies as $tax) {
-            if (taxonomy_exists($tax)) {
-                $terms = get_the_terms($postID, $tax);
+		foreach ($possibleTaxonomies as $tax) {
+			if (taxonomy_exists($tax)) {
+				$terms = get_the_terms($postID, $tax);
 
-                if (! is_array($terms)) {
-                    return null;
-                }
+				if (! is_array($terms)) {
+					return null;
+				}
 
-                return TermData::collect($terms, Collection::class);
-            }
-        }
+				return TermData::collect($terms, Collection::class);
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 }
