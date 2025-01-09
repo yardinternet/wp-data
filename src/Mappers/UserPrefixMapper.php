@@ -8,8 +8,8 @@ use Spatie\LaravelData\Mappers\NameMapper;
 
 class UserPrefixMapper implements NameMapper
 {
-    public function map(int|string $name): string|int
-    {
-        return 'user_' . $name;
-    }
+	public function map(int|string $name): string|int
+	{
+		return 'user_' . $name;
+	}
 }

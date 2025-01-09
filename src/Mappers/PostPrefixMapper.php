@@ -8,12 +8,12 @@ use Spatie\LaravelData\Mappers\NameMapper;
 
 class PostPrefixMapper implements NameMapper
 {
-    public function map(int|string $name): string|int
-    {
-        if ('postType' === $name) {
-            return 'post_type';
-        }
+	public function map(int|string $name): string|int
+	{
+		if ('postType' === $name) {
+			return 'post_type';
+		}
 
-        return 'post_' . $name;
-    }
+		return 'post_' . $name;
+	}
 }
