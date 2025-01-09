@@ -14,4 +14,11 @@ enum PostStatus: string
     case TRASH = 'trash';
     case AUTO = 'auto-draft';
     case INHERIT = 'inherit';
+
+	public function label(): string
+	{
+		$stati = get_post_stati([], 'objects');
+
+		return isset($stati[$this->value]) ? $stati[$this->value]->label : $this->value;
+	}
 }
