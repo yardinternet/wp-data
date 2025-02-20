@@ -221,7 +221,7 @@ class PostData extends Data implements PostDataInterface
 		return $this->postType;
 	}
 
-	private function defaultDateFormat(): string
+	protected function defaultDateFormat(): string
 	{
 		$dateFormat = \get_option('date_format');
 
