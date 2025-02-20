@@ -31,22 +31,24 @@ class PostData extends Data implements PostDataInterface
 {
 	public function __construct(
 		#[MapInputName('ID')]
-		public int $id,
+		public ?int $id,
 		#[WithCastable(UserData::class)]
 		public ?UserData $author,
 		public string $title,
 		public string $content,
 		public string $excerpt,
 		public PostStatus $status,
-		public CarbonImmutable $date,
-		public CarbonImmutable $modified,
+		public ?CarbonImmutable $date,
+		public ?CarbonImmutable $modified,
 		public string $postType,
 		#[MapInputName('post_name')]
 		public string $slug,
 		public ?ImageData $thumbnail,
 	) {
-		$this->loadMeta($id);
-		$this->loadTerms($id);
+		if (null !== $id) {
+			$this->loadMeta($id);
+			$this->loadTerms($id);
+		}
 	}
 
 	public static function fromPost(\WP_Post $post): PostData
@@ -170,7 +172,7 @@ class PostData extends Data implements PostDataInterface
 		];
 	}
 
-	public function id(): int
+	public function id(): ?int
 	{
 		return $this->id;
 	}
@@ -182,6 +184,10 @@ class PostData extends Data implements PostDataInterface
 
 	public function title(): string
 	{
+		if (null === $this->id) {
+			return '';
+		}
+
 		return get_the_title($this->id);
 	}
 
@@ -224,6 +230,10 @@ class PostData extends Data implements PostDataInterface
 
 	public function date(string $format = ''): string
 	{
+		if (null === $this->date) {
+			return '';
+		}
+
 		if ('' === $format) {
 			$format = $this->defaultDateFormat();
 		}
@@ -233,6 +243,10 @@ class PostData extends Data implements PostDataInterface
 
 	public function modified(string $format = ''): string
 	{
+		if (null === $this->modified) {
+			return '';
+		}
+
 		if ('' === $format) {
 			$format = $this->defaultDateFormat();
 		}
@@ -257,6 +271,10 @@ class PostData extends Data implements PostDataInterface
 
 	public function url(): string
 	{
+		if (null === $this->id) {
+			return '';
+		}
+
 		return \get_permalink($this->id) ?: '';
 	}
 }

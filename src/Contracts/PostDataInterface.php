@@ -12,20 +12,20 @@ use Yard\Data\UserData;
 interface PostDataInterface
 {
 	public function __construct(
-		int $id,
+		?int $id,
 		?UserData $author,
 		string $title,
 		string $content,
 		string $excerpt,
 		PostStatus $status,
-		CarbonImmutable $date,
-		CarbonImmutable $modified,
+		?CarbonImmutable $date,
+		?CarbonImmutable $modified,
 		string $postType,
 		string $slug,
 		?ImageData $thumbnail,
 	);
 
-	public function id(): int;
+	public function id(): ?int;
 	public function author(): ?UserData;
 	public function title(): string;
 	public function content(): string;
