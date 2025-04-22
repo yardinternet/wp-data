@@ -93,7 +93,17 @@ Every time you call `Yard\Data\PostData::from($post)` you receive an instance of
 
 If you choose to create a new data class for your custom post type, you can have this class be returned for all instances of that post type.
 
-Just use the config file and map all custom posts and it's classes:
+To do this, you need to add the Fully Qualified Class Name (FQCN) of your custom data class to the `supports` array when registering your custom post type:
+
+```php
+register_post_type('vacancy', [
+    'supports' => [
+        'data-class' => ['classFQN' => App\Data\KnowledgebaseData::class],
+    ],
+]);
+````
+
+Another option is to create a mapping in the `config/yard-data.php` file. The mapping in the project config takes precedence over the register_post_type `supports` args.
 
 ```php
 'post_types' => [

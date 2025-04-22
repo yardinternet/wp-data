@@ -8,6 +8,7 @@ use Carbon\CarbonImmutable;
 use Corcel\Model\Post;
 use ReflectionClass;
 use ReflectionNamedType;
+use RuntimeException;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\WithCastable;
 use Spatie\LaravelData\Data;
@@ -86,7 +87,7 @@ class PostData extends Data implements PostDataInterface
 	}
 
 	/**
-	 * @return class-string<self>
+	 * @return class-string<PostData>
 	 */
 	private static function dataClass(string $postType): string
 	{
@@ -96,7 +97,21 @@ class PostData extends Data implements PostDataInterface
 			return $classes[$postType];
 		}
 
-		return static::class;
+		$classFQN = get_all_post_type_supports($postType)['data-class'][0]['classFQN'] ?? null;
+
+		if (null === $classFQN) {
+			return static::class;
+		}
+		
+		if (! class_exists($classFQN)) {
+			throw new RuntimeException(sprintf('The class "%s" does not exist or is not autoloaded.', $classFQN));
+		}
+
+		if (! is_a($classFQN, PostData::class, true)) {
+			throw new RuntimeException(sprintf('The class "%s" must extend %s.', $classFQN, PostData::class));
+		}
+
+		return $classFQN;
 	}
 
 	private function metaPrefix(): string
