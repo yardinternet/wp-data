@@ -37,4 +37,5 @@ interface PostDataInterface
 	public function thumbnail(): ?ImageData;
 	public function hasThumbnail(): bool;
 	public function slug(): string;
+    public function url(): string;
 }
