@@ -7,6 +7,7 @@ namespace Yard\Data;
 use BackedEnum;
 use Carbon\CarbonImmutable;
 use Corcel\Model\Post;
+use Illuminate\Support\Collection;
 use ReflectionClass;
 use ReflectionNamedType;
 use RuntimeException;
@@ -294,5 +295,54 @@ class PostData extends Data implements PostDataInterface
 		}
 
 		return \get_permalink($this->id) ?: '';
+	}
+
+	public function isTopLevelParent(): bool
+	{
+		return $this->hasChildren() && ! $this->isChild();
+	}
+
+	public function hasChildren(): bool
+	{
+		return $this->children()->isNotEmpty();
+	}
+
+	/**
+	 * @param array<string, mixed> $args
+	 *
+	 * @return Collection<int, static>
+	 * */
+	public function children(array $args = []): Collection
+	{
+		if (! is_post_type_hierarchical($this->postType) || ! is_numeric($this->id)) {
+			return collect();
+		}
+		$args = wp_parse_args($args, [
+			'post_parent' => $this->id,
+			'post_type' => $this->postType,
+			'order' => 'ASC',
+			'orderby' => 'menu_order',
+		]);
+		$children = get_children($args);
+
+		return static::collect($children, Collection::class);
+	}
+
+	public function isChild(): bool
+	{
+		return null !== $this->parent();
+	}
+
+	public function parent(): ?PostData
+	{
+		if (! is_post_type_hierarchical($this->postType) || ! is_numeric($this->id)) {
+			return null;
+		}
+		$parent = get_post_parent($this->id);
+		if (null === $parent) {
+			return null;
+		}
+
+		return static::fromPost($parent);
 	}
 }
