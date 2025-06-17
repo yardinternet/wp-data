@@ -296,10 +296,10 @@ class PostData extends Data implements PostDataInterface
 
 	public function isTopLevelParent(): bool
 	{
-		return $this->hasChildren() && ! $this->isChild();
+		return $this->isParent() && ! $this->isChild();
 	}
 
-	public function hasChildren(): bool
+	public function isParent(): bool
 	{
 		return $this->children()->isNotEmpty();
 	}
