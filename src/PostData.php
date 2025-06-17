@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yard\Data;
 
+use BackedEnum;
 use Carbon\CarbonImmutable;
 use Corcel\Model\Post;
 use ReflectionClass;
@@ -102,7 +103,7 @@ class PostData extends Data implements PostDataInterface
 		if (null === $classFQN) {
 			return static::class;
 		}
-		
+
 		if (! class_exists($classFQN)) {
 			throw new RuntimeException(sprintf('The class "%s" does not exist or is not autoloaded.', $classFQN));
 		}
@@ -137,7 +138,9 @@ class PostData extends Data implements PostDataInterface
 				$meta = $metaAttribute->newInstance();
 				$metaValue = $meta->getValue($id, $property->name, $this->metaPrefix());
 				if (null !== $metaValue && null !== $propertyTypeName) {
-					if ('Spatie\LaravelData\Data' === $propertyTypeName || is_subclass_of($propertyTypeName, 'Spatie\LaravelData\Data')) {
+					if (is_a($propertyTypeName, Data::class, true)) {
+						$metaValue = $propertyTypeName::from($metaValue);
+					} elseif (is_a($propertyTypeName, BackedEnum::class, true) && (is_int($metaValue) || is_string($metaValue))) {
 						$metaValue = $propertyTypeName::from($metaValue);
 					}
 					$property->setValue($this, $metaValue);
