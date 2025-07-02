@@ -294,7 +294,7 @@ class PostData extends Data implements PostDataInterface
 		}
 
 		// Don't return URL for CPT's with publicly_queryable => false
-		if ($this->postType() != 'page' && $this->postType() != 'post' && ! is_post_type_viewable($this->id)) {
+		if ($this->postType() != 'page' && $this->postType() != 'post' && ! is_post_type_viewable($this->postType())) {
 			return '';
 		}
 
