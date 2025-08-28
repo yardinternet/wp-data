@@ -13,7 +13,7 @@ class Meta
 	{
 	}
 
-	public function getValue(int $postID, string $metaKey, string $prefix): mixed
+	public function getValue(string|int $postID, string $metaKey, string $prefix): mixed
 	{
 		if (isset($this->metaKey)) {
 			if ($value = \get_field($this->metaKey, $postID)) {

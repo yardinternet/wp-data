@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Yard\Data;
 
-use BackedEnum;
 use Carbon\CarbonImmutable;
 use Corcel\Model\Post;
 use Illuminate\Support\Collection;
 use ReflectionClass;
-use ReflectionNamedType;
 use RuntimeException;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\WithCastable;
@@ -20,18 +18,19 @@ use Spatie\LaravelData\Normalizers\JsonNormalizer;
 use Spatie\LaravelData\Normalizers\ModelNormalizer;
 use Spatie\LaravelData\Normalizers\Normalizer;
 use Spatie\LaravelData\Normalizers\ObjectNormalizer;
-use Yard\Data\Attributes\Meta;
-use Yard\Data\Attributes\MetaPrefix;
 use Yard\Data\Attributes\TaxonomyPrefix;
 use Yard\Data\Attributes\Terms;
 use Yard\Data\Contracts\PostDataInterface;
 use Yard\Data\Enums\PostStatus;
 use Yard\Data\Mappers\PostPrefixMapper;
 use Yard\Data\Normalizers\WPPostNormalizer;
+use Yard\Data\Traits\HasMeta;
 
 #[MapInputName(PostPrefixMapper::class)]
 class PostData extends Data implements PostDataInterface
 {
+	use HasMeta;
+
 	public function __construct(
 		#[MapInputName('ID')]
 		public ?int $id,
@@ -49,7 +48,7 @@ class PostData extends Data implements PostDataInterface
 		public ?ImageData $thumbnail,
 	) {
 		if (null !== $id) {
-			$this->loadMeta($id);
+			$this->loadMeta();
 			$this->loadTerms($id);
 		}
 	}
@@ -114,40 +113,6 @@ class PostData extends Data implements PostDataInterface
 		}
 
 		return $classFQN;
-	}
-
-	private function metaPrefix(): string
-	{
-		$reflectionClass = new ReflectionClass($this);
-		$metaPrefixAttribute = $reflectionClass->getAttributes(MetaPrefix::class)[0] ?? null;
-
-		return $metaPrefixAttribute?->newInstance()->prefix ?? '';
-	}
-
-	private function loadMeta(int $id): void
-	{
-		$reflectionClass = new ReflectionClass($this);
-		$properties = $reflectionClass->getProperties();
-		foreach ($properties as $property) {
-			$propertyType = $property->getType();
-			$propertyTypeName = null;
-			if ($propertyType instanceof ReflectionNamedType) {
-				$propertyTypeName = $propertyType->getName();
-			}
-			$metaAttributes = $property->getAttributes(Meta::class);
-			foreach ($metaAttributes as $metaAttribute) {
-				$meta = $metaAttribute->newInstance();
-				$metaValue = $meta->getValue($id, $property->name, $this->metaPrefix());
-				if (null !== $metaValue && null !== $propertyTypeName) {
-					if (is_a($propertyTypeName, Data::class, true)) {
-						$metaValue = $propertyTypeName::from($metaValue);
-					} elseif (is_a($propertyTypeName, BackedEnum::class, true) && (is_int($metaValue) || is_string($metaValue))) {
-						$metaValue = $propertyTypeName::from($metaValue);
-					}
-					$property->setValue($this, $metaValue);
-				}
-			}
-		}
 	}
 
 	private function taxonomyPrefix(): string
