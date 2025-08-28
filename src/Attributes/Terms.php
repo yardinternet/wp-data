@@ -11,7 +11,7 @@ use Yard\Data\TermData;
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Terms
 {
-	public function __construct(private ?string $taxonomy = null)
+	public function __construct(private ?string $taxonomy = null, private string $dataClass = TermData::class)
 	{
 	}
 
@@ -41,7 +41,7 @@ class Terms
 					return null;
 				}
 
-				return TermData::collect($terms, Collection::class);
+				return $this->dataClass::collect($terms, Collection::class);
 			}
 		}
 
