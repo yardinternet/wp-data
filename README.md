@@ -244,6 +244,45 @@ $postData->locations->firstWhere('slug', 'utrecht')->name; // Utrecht
 $vacancyData->locations->implode('name', ', '), // Almere, Amsterdam, Utrecht
 ```
 
+#### Extending TermData
+
+You can add extra meta fields to taxonomies by extending the default TermData object
+
+```php
+namespace App\Data;
+
+use Yard\Data\TermData;
+
+class TypeTermData extends TermData {
+
+  #[Meta()]
+  public string $icon;
+}
+
+```
+
+In your PostData object you have to specify the data class used for a specific taxonomy:
+
+```php
+namespace App\Data;
+
+use Illuminate\Support\Collection;
+use Yard\Data\Attributes\TaxonomyPrefix;
+use Yard\Data\Attributes\Terms;
+use Yard\Data\PostData;
+
+class VacancyData extends PostData
+{
+    #[Terms(dataClass: TypeTermData::class)]
+    /** @var Collection<int, TypeTermData> */
+    public Collection $type;
+}
+```
+
+```php
+$vacancyTypeIcon = $vacancyData->type->first()?->icon;
+```
+
 ### UserData
 
 Create UserData from current user:

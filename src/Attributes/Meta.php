@@ -13,10 +13,10 @@ class Meta
 	{
 	}
 
-	public function getValue(string|int $postID, string $metaKey, string $prefix): mixed
+	public function getValue(string|int $objectID, string $metaKey, string $prefix): mixed
 	{
 		if (isset($this->metaKey)) {
-			if ($value = \get_field($this->metaKey, $postID)) {
+			if ($value = \get_field($this->metaKey, $objectID)) {
 				return $value;
 			} else {
 				return null;
@@ -31,7 +31,7 @@ class Meta
 		];
 
 		foreach ($possibleKeys as $key) {
-			if ($value = \get_field($key, $postID)) {
+			if ($value = \get_field($key, $objectID)) {
 				return $value;
 			}
 		}
