@@ -25,7 +25,7 @@ trait HasMeta
 			$metaAttributes = $property->getAttributes(Meta::class);
 			foreach ($metaAttributes as $metaAttribute) {
 				$meta = $metaAttribute->newInstance();
-				$metaValue = $meta->getValue($this->postID(), $property->name, $this->metaPrefix());
+				$metaValue = $meta->getValue($this->objectID(), $property->name, $this->metaPrefix());
 				if (null !== $metaValue && null !== $propertyTypeName) {
 					if (is_a($propertyTypeName, Data::class, true)) {
 						$metaValue = $propertyTypeName::from($metaValue);
@@ -46,7 +46,7 @@ trait HasMeta
 		return $metaPrefixAttribute?->newInstance()->prefix ?? '';
 	}
 
-	private function postID(): string|int
+	private function objectID(): string|int
 	{
 		if (is_a($this, PostData::class)) {
 			return $this->id ?? 0;
