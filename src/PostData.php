@@ -112,6 +112,7 @@ class PostData extends Data implements PostDataInterface
 			throw new RuntimeException(sprintf('The class "%s" must extend %s.', $classFQN, PostData::class));
 		}
 
+		/** @var class-string<PostData> $classFQN */
 		return $classFQN;
 	}
 
@@ -329,6 +330,7 @@ class PostData extends Data implements PostDataInterface
 			return collect();
 		}
 
+		/** @var array<int, CommentData> $comments */
 		$comments = get_comments(['post_id' => $this->id]);
 
 		return CommentData::collect($comments, Collection::class);
