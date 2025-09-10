@@ -330,6 +330,7 @@ class PostData extends Data implements PostDataInterface
 			return collect();
 		}
 
+		/** @var array<int, CommentData> $comments */
 		$comments = get_comments(['post_id' => $this->id]);
 
 		return CommentData::collect($comments, Collection::class);
