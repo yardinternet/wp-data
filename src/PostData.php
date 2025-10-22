@@ -53,7 +53,7 @@ class PostData extends Data implements PostDataInterface
 		}
 	}
 
-	public static function fromPost(\WP_Post $post): PostData
+	public static function fromPost(\WP_Post $post): static
 	{
 		return new (self::dataClass($post->post_type))(
 			id: $post->ID,
@@ -70,7 +70,7 @@ class PostData extends Data implements PostDataInterface
 		);
 	}
 
-	public static function fromCorcel(Post $post): PostData
+	public static function fromCorcel(Post $post): static
 	{
 		return new (self::dataClass($post->post_type))(
 			id: $post->ID,
@@ -88,7 +88,7 @@ class PostData extends Data implements PostDataInterface
 	}
 
 	/**
-	 * @return class-string<PostData>
+	 * @return class-string<static>
 	 */
 	private static function dataClass(string $postType): string
 	{
@@ -112,6 +112,7 @@ class PostData extends Data implements PostDataInterface
 			throw new RuntimeException(sprintf('The class "%s" must extend %s.', $classFQN, PostData::class));
 		}
 
+		/** @var class-string<static> $classFQN */
 		return $classFQN;
 	}
 
@@ -298,7 +299,7 @@ class PostData extends Data implements PostDataInterface
 		return null !== $this->parent();
 	}
 
-	public function parent(): ?PostData
+	public function parent(): ?static
 	{
 		if (! is_post_type_hierarchical($this->postType) || ! is_numeric($this->id)) {
 			return null;
