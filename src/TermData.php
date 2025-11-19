@@ -8,6 +8,7 @@ use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Data;
 use Yard\Data\Traits\HasMeta;
 
+/** @phpstan-consistent-constructor */
 class TermData extends Data
 {
 	use HasMeta;
@@ -25,8 +26,12 @@ class TermData extends Data
 
 	public static function fromTerm(\WP_Term $term): TermData
 	{
-		return static::from(
-			$term->to_array()
+		return new static(
+			id: $term->term_id,
+			name: $term->name,
+			slug: $term->slug,
+			taxonomy: $term->taxonomy,
+			description: $term->description,
 		);
 	}
 }
