@@ -1,10 +1,10 @@
 # WP Data Objects
 
-[![Code Style](https://github.com/yardinternet/yard-data/actions/workflows/format-php.yml/badge.svg?no-cache)](https://github.com/yardinternet/yard-data/actions/workflows/format-php.yml)
-[![PHPStan](https://github.com/yardinternet/yard-data/actions/workflows/phpstan.yml/badge.svg)](https://github.com/yardinternet/yard-data/actions/workflows/phpstan.yml)
-[![Tests](https://github.com/yardinternet/yard-data/actions/workflows/run-tests.yml/badge.svg?no-cache)](https://github.com/yardinternet/yard-data/actions/workflows/run-tests.yml)
-[![Code Coverage Badge](https://github.com/yardinternet/yard-data/blob/badges/coverage.svg)](https://github.com/yardinternet/yard-data/actions/workflows/badges.yml)
-[![Lines of Code Badge](https://github.com/yardinternet/yard-data/blob/badges/lines-of-code.svg)](https://github.com/yardinternet/yard-data/actions/workflows/badges.yml)
+[![Code Style](https://github.com/yardinternet/wp-data/actions/workflows/format-php.yml/badge.svg?no-cache)](https://github.com/yardinternet/wp-data/actions/workflows/format-php.yml)
+[![PHPStan](https://github.com/yardinternet/wp-data/actions/workflows/phpstan.yml/badge.svg?no-cache)](https://github.com/yardinternet/wp-data/actions/workflows/phpstan.yml)
+[![Tests](https://github.com/yardinternet/wp-data/actions/workflows/run-tests.yml/badge.svg?no-cache)](https://github.com/yardinternet/wp-data/actions/workflows/run-tests.yml)
+[![Code Coverage Badge](https://github.com/yardinternet/wp-data/blob/badges/coverage.svg)](https://github.com/yardinternet/wp-data/actions/workflows/badges.yml)
+[![Lines of Code Badge](https://github.com/yardinternet/wp-data/blob/badges/lines-of-code.svg)](https://github.com/yardinternet/wp-data/actions/workflows/badges.yml)
 
 Powerful data objects for WordPress.
 

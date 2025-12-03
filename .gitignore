@@ -2,3 +2,4 @@
 .php-cs-fixer.cache
 vendor
 build
+.idea
