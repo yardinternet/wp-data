@@ -1,4 +1,4 @@
-# Yard Data Objects
+# WP Data Objects
 
 [![Code Style](https://github.com/yardinternet/yard-data/actions/workflows/format-php.yml/badge.svg?no-cache)](https://github.com/yardinternet/yard-data/actions/workflows/format-php.yml)
 [![PHPStan](https://github.com/yardinternet/yard-data/actions/workflows/phpstan.yml/badge.svg)](https://github.com/yardinternet/yard-data/actions/workflows/phpstan.yml)
@@ -290,3 +290,7 @@ Create UserData from current user:
 ```php
 $userData = UserData::from(wp_get_current_user());
 ```
+
+## About us
+
+[![banner](https://raw.githubusercontent.com/yardinternet/.github/refs/heads/main/profile/assets/small-banner-github.svg)](https://www.yard.nl/werken-bij/)
