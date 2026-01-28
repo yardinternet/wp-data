@@ -9,7 +9,7 @@
       "pestphp/pest-plugin": true
     },
     "platform": {
-      "php": "8.1"
+      "php": "8.2"
     }
   },
   "support": {
@@ -17,7 +17,7 @@
     "issues": "https://github.com/yardinternet/yard-data/issues"
   },
   "require": {
-    "php": ">=8.1",
+    "php": ">=8.2",
     "jgrossi/corcel": "^7.0",
     "spatie/laravel-data": "^4.5"
   },
