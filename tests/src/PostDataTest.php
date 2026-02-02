@@ -28,13 +28,32 @@ it('can get the URL of the post', function () {
 		'return' => 'https://example.com/hello-world',
 	]);
 
+	\WP_Mock::userFunction('is_post_publicly_viewable', [
+		'args' => [1],
+		'return' => true,
+	]);
+
 	expect($this->postData->url())->toBe('https://example.com/hello-world');
+});
+
+it('returns an empty string when post is not publicly viewable', function () {
+	\WP_Mock::userFunction('is_post_publicly_viewable', [
+		'args' => [1],
+		'return' => false,
+	]);
+
+	expect($this->postData->url())->toBe('');
 });
 
 it('returns an empty string when url does not exist', function () {
 	\WP_Mock::userFunction('get_permalink', [
 		'args' => [1],
 		'return' => false,
+	]);
+
+	\WP_Mock::userFunction('is_post_publicly_viewable', [
+		'args' => [1],
+		'return' => true,
 	]);
 
 	expect($this->postData->url())->toBe('');
