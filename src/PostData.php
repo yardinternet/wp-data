@@ -256,7 +256,7 @@ class PostData extends Data implements PostDataInterface
 
 	public function url(): string
 	{
-		if (null === $this->id) {
+		if (null === $this->id || ! is_post_publicly_viewable($this->id)) {
 			return '';
 		}
 
