@@ -7,6 +7,7 @@ namespace Yard\Data;
 use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Data;
 
+/** @phpstan-consistent-constructor */
 class CommentData extends Data
 {
 	public function __construct(
@@ -27,9 +28,9 @@ class CommentData extends Data
 	) {
 	}
 
-	public static function fromComment(\WP_Comment $comment): CommentData
+	public static function fromComment(\WP_Comment $comment): static
 	{
-		return new self(
+		return new static(
 			id: (int) $comment->comment_ID,
 			post: null !== get_post((int)$comment->comment_post_ID) ? PostData::fromPost(get_post((int)$comment->comment_post_ID)) : null,
 			author: $comment->comment_author,
