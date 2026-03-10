@@ -311,4 +311,36 @@ class PostData extends Data implements PostDataInterface
 
 		return static::fromPost($parent);
 	}
+
+	public function commentCount(): ?int
+	{
+		if (null === $this->id || ! post_type_supports($this->postType, 'comments')) {
+			return null;
+		}
+
+		return (int) get_comments_number($this->id);
+	}
+
+	/**
+	 * @param array<string, mixed> $args
+	 *
+	 * @return Collection<int, CommentData>
+	 */
+	public function comments(array $args = []): Collection
+	{
+		if (null === $this->id || ! post_type_supports($this->postType, 'comments')) {
+			return collect();
+		}
+
+		$args = wp_parse_args($args, [
+			'post_id' => $this->id,
+			'status' => 'approve',
+			'type' => 'comment',
+		]);
+
+		/** @var array<int, CommentData> $comments */
+		$comments = get_comments($args);
+
+		return CommentData::collect($comments, Collection::class);
+	}
 }
