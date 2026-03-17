@@ -27,25 +27,37 @@ trait HasMeta
 			foreach ($metaAttributes as $metaAttribute) {
 				$meta = $metaAttribute->newInstance();
 				$metaValue = $meta->getValue($this->objectID(), $property->name, $this->metaPrefix());
-				if (null !== $metaValue && null !== $propertyTypeName) {
-					if (is_a($propertyTypeName, Data::class, true)) {
-						$metaValue = $propertyTypeName::from($metaValue);
-					} elseif (is_a($propertyTypeName, \BackedEnum::class, true) && (is_int($metaValue) || is_string($metaValue))) {
-						$metaValue = $propertyTypeName::from($metaValue);
-					} elseif (is_a($propertyTypeName, CarbonImmutable::class, true) && is_string($metaValue)) {
-						if (CarbonImmutable::canBeCreatedFromFormat($metaValue, 'Ymd')) {
-							$metaValue = CarbonImmutable::createFromFormat('Ymd', $metaValue);
-						} elseif (CarbonImmutable::canBeCreatedFromFormat($metaValue, 'Y-m-d H:i:s')) {
-							$metaValue = CarbonImmutable::createFromFormat('Y-m-d H:i:s', $metaValue);
-						} else {
-							$metaValue = CarbonImmutable::parse($metaValue);
-						}
-					}
-
-					$property->setValue($this, $metaValue);
+				if (null === $metaValue || null === $propertyTypeName) {
+					continue;
 				}
+				$metaValue = $this->castValue($metaValue, $propertyTypeName);
+				$property->setValue($this, $metaValue);
 			}
 		}
+	}
+
+	private function castValue(mixed $value, string $type): mixed
+	{
+		if (is_a($type, Data::class, true)) {
+			return $type::from($value);
+		}
+
+		if (is_a($type, \BackedEnum::class, true) && (is_int($value) || is_string($value))) {
+			return $type::from($value);
+		}
+
+		if (is_a($type, CarbonImmutable::class, true) && is_string($value)) {
+			if (CarbonImmutable::canBeCreatedFromFormat($value, 'Ymd')) {
+				return CarbonImmutable::createFromFormat('Ymd', $value);
+			}
+			if (CarbonImmutable::canBeCreatedFromFormat($value, 'Y-m-d H:i:s')) {
+				return CarbonImmutable::createFromFormat('Y-m-d H:i:s', $value);
+			} else {
+				return CarbonImmutable::parse($value);
+			}
+		}
+
+		return $value;
 	}
 
 	private function metaPrefix(): string
