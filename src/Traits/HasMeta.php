@@ -37,6 +37,8 @@ trait HasMeta
 							$metaValue = CarbonImmutable::createFromFormat('Ymd', $metaValue);
 						} elseif (CarbonImmutable::canBeCreatedFromFormat($metaValue, 'Y-m-d H:i:s')) {
 							$metaValue = CarbonImmutable::createFromFormat('Y-m-d H:i:s', $metaValue);
+						} else {
+							$metaValue = CarbonImmutable::parse($metaValue);
 						}
 					}
 
