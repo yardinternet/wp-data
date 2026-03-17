@@ -33,9 +33,9 @@ trait HasMeta
 					} elseif (is_a($propertyTypeName, \BackedEnum::class, true) && (is_int($metaValue) || is_string($metaValue))) {
 						$metaValue = $propertyTypeName::from($metaValue);
 					} elseif (is_a($propertyTypeName, CarbonImmutable::class, true) && is_string($metaValue)) {
-						if (CarbonImmutable::canBeCreatedFromFormat($metaValue,'Ymd')) {
+						if (CarbonImmutable::canBeCreatedFromFormat($metaValue, 'Ymd')) {
 							$metaValue = CarbonImmutable::createFromFormat('Ymd', $metaValue);
-						} elseif (CarbonImmutable::canBeCreatedFromFormat($metaValue,'Y-m-d H:i:s')) {
+						} elseif (CarbonImmutable::canBeCreatedFromFormat($metaValue, 'Y-m-d H:i:s')) {
 							$metaValue = CarbonImmutable::createFromFormat('Y-m-d H:i:s', $metaValue);
 						}
 					}
