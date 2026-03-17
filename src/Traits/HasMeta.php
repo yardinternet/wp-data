@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yard\Data\Traits;
 
+use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Data;
 use Yard\Data\Attributes\Meta;
 use Yard\Data\Attributes\MetaPrefix;
@@ -31,7 +32,14 @@ trait HasMeta
 						$metaValue = $propertyTypeName::from($metaValue);
 					} elseif (is_a($propertyTypeName, \BackedEnum::class, true) && (is_int($metaValue) || is_string($metaValue))) {
 						$metaValue = $propertyTypeName::from($metaValue);
+					} elseif (is_a($propertyTypeName, CarbonImmutable::class, true) && is_string($metaValue)) {
+						if (CarbonImmutable::canBeCreatedFromFormat($metaValue,'Ymd')) {
+							$metaValue = CarbonImmutable::createFromFormat('Ymd', $metaValue);
+						} elseif (CarbonImmutable::canBeCreatedFromFormat($metaValue,'Y-m-d H:i:s')) {
+							$metaValue = CarbonImmutable::createFromFormat('Y-m-d H:i:s', $metaValue);
+						}
 					}
+
 					$property->setValue($this, $metaValue);
 				}
 			}
