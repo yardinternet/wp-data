@@ -18,7 +18,7 @@
   },
   "require": {
     "php": ">=8.2",
-    "jgrossi/corcel": "^7.0",
+    "jgrossi/corcel": "^7.0 || ^8.0 || ^9.0",
     "spatie/laravel-data": "^4.5"
   },
   "require-dev": {
@@ -39,20 +39,20 @@
       "Yard\\Data\\Tests\\": "tests/"
     }
   },
-	"scripts": {
-		"post-autoload-dump": [
-			"sed -i -e 's#function __(#function ____(#' ./vendor/php-stubs/wordpress-stubs/wordpress-stubs.php"
-		],
-		"all": [
-			"@test",
-			"@analyse",
-			"@format"
-		],
-		"analyse": "vendor/bin/phpstan analyse --debug --memory-limit 1G",
-		"format": "vendor/bin/php-cs-fixer fix",
-		"test": "vendor/bin/pest",
-		"test:coverage": "XDEBUG_MODE=coverage vendor/bin/pest --coverage"
-	},
+  "scripts": {
+    "post-autoload-dump": [
+      "sed -i -e 's#function __(#function ____(#' ./vendor/php-stubs/wordpress-stubs/wordpress-stubs.php"
+    ],
+    "all": [
+      "@test",
+      "@analyse",
+      "@format"
+    ],
+    "analyse": "vendor/bin/phpstan analyse --debug --memory-limit 1G",
+    "format": "vendor/bin/php-cs-fixer fix",
+    "test": "vendor/bin/pest",
+    "test:coverage": "XDEBUG_MODE=coverage vendor/bin/pest --coverage"
+  },
   "extra": {
     "acorn": {
       "providers": [
