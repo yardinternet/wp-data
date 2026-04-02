@@ -40,7 +40,7 @@ class CommentData extends Data
 			date: CarbonImmutable::createFromFormat('Y-m-d H:i:s', $comment->comment_date)?: null,
 			dateGmt: CarbonImmutable::createFromFormat('Y-m-d H:i:s', $comment->comment_date_gmt)?: null,
 			content: $comment->comment_content,
-			approved: (bool) $comment->comment_approved,
+			approved: $comment->comment_approved === '1',
 			agent: $comment->comment_agent,
 			type: $comment->comment_type,
 			parent: null !== get_comment((int) $comment->comment_parent) ? CommentData::fromComment(get_comment((int) $comment->comment_parent)) : null,

@@ -15,6 +15,7 @@ beforeEach(function () {
 		postType: 'post',
 		slug: 'hello-world',
 		thumbnail: null,
+		commentCount: 0,
 	);
 });
 

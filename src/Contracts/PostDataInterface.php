@@ -23,6 +23,7 @@ interface PostDataInterface
 		string $postType,
 		string $slug,
 		?ImageData $thumbnail,
+		int $commentCount,
 	);
 
 	public function id(): ?int;
