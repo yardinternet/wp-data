@@ -46,7 +46,7 @@ class PostData extends Data implements PostDataInterface
 		#[MapInputName('post_name')]
 		public string $slug,
 		public ?ImageData $thumbnail,
-		public int $commentCount,
+		public ?int $commentCount,
 	) {
 		if (null !== $id) {
 			$this->loadMeta();
@@ -68,7 +68,7 @@ class PostData extends Data implements PostDataInterface
 			postType: $post->post_type,
 			slug: $post->post_name,
 			thumbnail: get_post_thumbnail_id($post->ID) ? new ImageData(get_post_thumbnail_id($post->ID)) : null,
-			commentCount: (int) $post->comment_count,
+			commentCount: post_type_supports($post->post_type, 'comments') ? (int) $post->comment_count : null,
 		);
 	}
 
@@ -86,7 +86,7 @@ class PostData extends Data implements PostDataInterface
 			postType: $post->post_type,
 			slug: $post->post_name,
 			thumbnail: get_post_thumbnail_id($post->ID) ? new ImageData(get_post_thumbnail_id($post->ID)) : null,
-			commentCount: (int) $post->comment_count,
+			commentCount: post_type_supports($post->post_type, 'comments') ? (int) $post->comment_count : null,
 		);
 	}
 

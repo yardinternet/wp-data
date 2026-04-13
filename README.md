@@ -283,6 +283,14 @@ class VacancyData extends PostData
 $vacancyTypeIcon = $vacancyData->type->first()?->icon;
 ```
 
+#### Reading comments for your Data Objects
+
+If the post type of the data object supports comments, you can retrieve them as a collection of `CommentData`
+
+```php
+$postData->comments()->first()?->authorEmail;
+```
+
 ### UserData
 
 Create UserData from current user:
