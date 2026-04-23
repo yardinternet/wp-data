@@ -6,10 +6,13 @@ namespace Yard\Data;
 
 use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Data;
+use Yard\Data\Traits\HasMeta;
 
 /** @phpstan-consistent-constructor */
 class CommentData extends Data
 {
+	use HasMeta;
+
 	public function __construct(
 		public int $id,
 		public ?PostData $post,
@@ -26,6 +29,7 @@ class CommentData extends Data
 		public ?CommentData $parent,
 		public ?UserData $user,
 	) {
+		$this->loadMeta();
 	}
 
 	public static function fromComment(\WP_Comment $comment): static
