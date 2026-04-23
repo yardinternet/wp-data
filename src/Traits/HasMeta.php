@@ -8,6 +8,7 @@ use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Data;
 use Yard\Data\Attributes\Meta;
 use Yard\Data\Attributes\MetaPrefix;
+use Yard\Data\CommentData;
 use Yard\Data\PostData;
 use Yard\Data\TermData;
 
@@ -75,6 +76,9 @@ trait HasMeta
 		}
 		if (is_a($this, TermData::class)) {
 			return $this->taxonomy . '_' . $this->id;
+		}
+		if (is_a($this, CommentData::class)) {
+			return 'comment_' . $this->id;
 		}
 
 		return 0;

@@ -15,5 +15,5 @@ parameters:
         -
             identifier: function.impossibleType
             path: src/Traits/HasMeta.php
-            count: 1
+            count: 3
 

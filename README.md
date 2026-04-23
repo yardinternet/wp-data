@@ -291,6 +291,22 @@ If the post type of the data object supports comments, you can retrieve them as 
 $postData->comments()->first()?->authorEmail;
 ```
 
+#### Extending CommentData
+
+You can add extra meta fields to comments by extending the default CommentData object
+
+```php
+namespace App\Data;
+
+use Yard\Data\CommentData;
+
+class LinkedInCommmentData extends CommentDataData {
+
+  #[Meta()]
+  public string $linkedInUserName;
+}
+```
+
 ### UserData
 
 Create UserData from current user:
