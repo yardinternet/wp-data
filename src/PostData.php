@@ -332,7 +332,7 @@ class PostData extends Data implements PostDataInterface
 			'type' => 'comment',
 		]);
 
-		/** @var array<int, CommentData> $comments */
+		/** @var array<int, \WP_Comment> $comments */
 		$comments = get_comments($args);
 
 		return CommentData::collect($comments, Collection::class);
