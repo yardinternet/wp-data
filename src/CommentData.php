@@ -36,7 +36,7 @@ class CommentData extends Data
 	{
 		return new static(
 			id: (int) $comment->comment_ID,
-			post: null !== get_post((int)$comment->comment_post_ID) ? PostData::fromPost(get_post((int)$comment->comment_post_ID)) : null,
+			post: 0 !== (int) $comment->comment_post_ID && null !== get_post((int)$comment->comment_post_ID) ? PostData::fromPost(get_post((int)$comment->comment_post_ID)) : null,
 			author: $comment->comment_author,
 			authorEmail: $comment->comment_author_email,
 			authorUrl: $comment->comment_author_url,
@@ -47,8 +47,8 @@ class CommentData extends Data
 			approved: '1' === $comment->comment_approved,
 			agent: $comment->comment_agent,
 			type: $comment->comment_type,
-			parent: null !== get_comment((int) $comment->comment_parent) ? CommentData::fromComment(get_comment((int) $comment->comment_parent)) : null,
-			user: false !== get_userdata((int) $comment->user_id) ? UserData::fromUser(get_userdata((int) $comment->user_id)) : null,
+			parent: 0 !== (int) $comment->comment_parent && null !== get_comment((int) $comment->comment_parent) ? CommentData::fromComment(get_comment((int) $comment->comment_parent)) : null,
+			user: 0 !== (int) $comment->user_id && false !== get_userdata((int) $comment->user_id) ? UserData::fromUser(get_userdata((int) $comment->user_id)) : null,
 		);
 	}
 }
