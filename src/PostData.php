@@ -56,7 +56,12 @@ class PostData extends Data implements PostDataInterface
 
 	public static function fromPost(\WP_Post $post): static
 	{
-		return new (self::dataClass($post->post_type))(
+		$cachedPostData = wp_cache_get($post->ID, 'yard_post_data', false, $found);
+		if ($found && $cachedPostData instanceof static) {
+			return $cachedPostData;
+		}
+
+		$postData = new (self::dataClass($post->post_type))(
 			id: $post->ID,
 			author: false !== get_userdata((int) $post->post_author) ? UserData::fromUser(get_userdata((int) $post->post_author)) : null,
 			title: $post->post_title,
@@ -70,11 +75,19 @@ class PostData extends Data implements PostDataInterface
 			thumbnail: get_post_thumbnail_id($post->ID) ? new ImageData(get_post_thumbnail_id($post->ID)) : null,
 			commentCount: post_type_supports($post->post_type, 'comments') ? (int) $post->comment_count : null,
 		);
+		wp_cache_set($post->ID, $postData, 'yard_post_data');
+
+		return $postData;
 	}
 
 	public static function fromCorcel(Post $post): static
 	{
-		return new (self::dataClass($post->post_type))(
+		$cachedPostData = wp_cache_get($post->ID, 'yard_post_data', false, $found);
+		if ($found && $cachedPostData instanceof static) {
+			return $cachedPostData;
+		}
+
+		$postData = new (self::dataClass($post->post_type))(
 			id: $post->ID,
 			author: false !== get_userdata($post->post_author) ? UserData::fromUser(get_userdata($post->post_author)) : null,
 			title: $post->post_title,
@@ -88,6 +101,9 @@ class PostData extends Data implements PostDataInterface
 			thumbnail: get_post_thumbnail_id($post->ID) ? new ImageData(get_post_thumbnail_id($post->ID)) : null,
 			commentCount: post_type_supports($post->post_type, 'comments') ? (int) $post->comment_count : null,
 		);
+		wp_cache_set($post->ID, $postData, 'yard_post_data');
+
+		return $postData;
 	}
 
 	/**

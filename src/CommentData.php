@@ -34,7 +34,12 @@ class CommentData extends Data
 
 	public static function fromComment(\WP_Comment $comment): static
 	{
-		return new static(
+		$cachedCommentData = wp_cache_get($comment->comment_ID, 'yard_comment_data', false, $found);
+		if ($found && $cachedCommentData instanceof static) {
+			return $cachedCommentData;
+		}
+
+		$commentData = new static(
 			id: (int) $comment->comment_ID,
 			post: 0 !== (int) $comment->comment_post_ID && null !== get_post((int)$comment->comment_post_ID) ? PostData::fromPost(get_post((int)$comment->comment_post_ID)) : null,
 			author: $comment->comment_author,
@@ -50,5 +55,7 @@ class CommentData extends Data
 			parent: 0 !== (int) $comment->comment_parent && null !== get_comment((int) $comment->comment_parent) ? CommentData::fromComment(get_comment((int) $comment->comment_parent)) : null,
 			user: 0 !== (int) $comment->user_id && false !== get_userdata((int) $comment->user_id) ? UserData::fromUser(get_userdata((int) $comment->user_id)) : null,
 		);
+		wp_cache_set($comment->comment_ID, $commentData, 'yard_comment_data');
+		return $commentData;
 	}
 }

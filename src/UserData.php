@@ -30,7 +30,12 @@ class UserData extends Data implements Castable
 
 	public static function fromUser(\WP_User $user): self
 	{
-		return new self(
+		$cachedUserData = wp_cache_get($user->ID, 'yard_user_data', false, $found);
+		if ($found && $cachedUserData instanceof self) {
+			return $cachedUserData;
+		}
+
+		$userData = new self(
 			id: $user->ID,
 			login: $user->user_login,
 			password: $user->user_pass,
@@ -38,6 +43,9 @@ class UserData extends Data implements Castable
 			email: $user->user_email,
 			displayName: $user->display_name,
 		);
+		wp_cache_set($user->ID, $userData, 'yard_user_data');
+
+		return $userData;
 	}
 
 	/**
