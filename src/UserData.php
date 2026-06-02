@@ -31,7 +31,7 @@ class UserData extends Data implements Castable
 	public static function fromUser(\WP_User $user): self
 	{
 		$cachedUserData = wp_cache_get($user->ID, 'yard_user_data', false, $found);
-		if ($found && $cachedUserData instanceof self) {
+		if ($found && $cachedUserData instanceof UserData) {
 			return $cachedUserData;
 		}
 
