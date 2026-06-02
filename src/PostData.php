@@ -31,7 +31,7 @@ class PostData extends Data implements PostDataInterface
 {
 	use HasMeta;
 
-    public const CACHE_GROUP = 'yard_post_data';
+	public const CACHE_GROUP = 'yard_post_data';
 
 	public function __construct(
 		#[MapInputName('ID')]
