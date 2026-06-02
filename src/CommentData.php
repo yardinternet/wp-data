@@ -11,7 +11,7 @@ use Yard\Data\Traits\HasMeta;
 /** @phpstan-consistent-constructor */
 class CommentData extends Data
 {
-    public const CACHE_GROUP = 'yard_comment_data';
+	public const CACHE_GROUP = 'yard_comment_data';
 
 	use HasMeta;
 
@@ -36,7 +36,7 @@ class CommentData extends Data
 
 	public static function fromComment(\WP_Comment $comment): static
 	{
-        wp_cache_add_non_persistent_groups([self::CACHE_GROUP]);
+		wp_cache_add_non_persistent_groups([self::CACHE_GROUP]);
 
 		$cachedCommentData = wp_cache_get($comment->comment_ID, self::CACHE_GROUP, false, $found);
 		if ($found && $cachedCommentData instanceof CommentData) {
