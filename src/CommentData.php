@@ -56,6 +56,7 @@ class CommentData extends Data
 			user: 0 !== (int) $comment->user_id && false !== get_userdata((int) $comment->user_id) ? UserData::fromUser(get_userdata((int) $comment->user_id)) : null,
 		);
 		wp_cache_set($comment->comment_ID, $commentData, 'yard_comment_data');
+
 		return $commentData;
 	}
 }
