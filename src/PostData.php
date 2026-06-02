@@ -31,7 +31,7 @@ class PostData extends Data implements PostDataInterface
 {
 	use HasMeta;
 
-	public const CACHE_GROUP = 'yard_post_data';
+    public const CACHE_GROUP = 'yard_post_data';
 
 	public function __construct(
 		#[MapInputName('ID')]
@@ -60,6 +60,7 @@ class PostData extends Data implements PostDataInterface
 	{
 		$cachedPostData = wp_cache_get($post->ID, self::CACHE_GROUP, false, $found);
 		if ($found && $cachedPostData instanceof PostData) {
+			// @phpstan-ignore return.type
 			return $cachedPostData;
 		}
 
@@ -86,6 +87,7 @@ class PostData extends Data implements PostDataInterface
 	{
 		$cachedPostData = wp_cache_get($post->ID, self::CACHE_GROUP, false, $found);
 		if ($found && $cachedPostData instanceof PostData) {
+			// @phpstan-ignore return.type
 			return $cachedPostData;
 		}
 
