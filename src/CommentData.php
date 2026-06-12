@@ -55,7 +55,7 @@ class CommentData extends Data
 			agent: $comment->comment_agent,
 			type: $comment->comment_type,
 			parent: 0 !== (int) $comment->comment_parent && null !== get_comment((int) $comment->comment_parent) ? CommentData::fromComment(get_comment((int) $comment->comment_parent)) : null,
-			user: 0 !== (int) $comment->user_id && false !== get_userdata((int) $comment->user_id) ? UserData::fromUser(get_userdata((int) $comment->user_id)) : null,
+			user: 0 !== (int) $comment->user_id && false !== \WP_User::get_data_by('id', (int) $comment->user_id) ? UserData::fromUser(get_userdata((int) $comment->user_id)) : null,
 		);
 		wp_cache_set($comment->comment_ID, $commentData, self::CACHE_GROUP);
 

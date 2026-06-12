@@ -28,3 +28,11 @@ parameters:
             message: '#Method Yard\\Data\\PostData::fromCorcel\(\) should return static\(Yard\\Data\\PostData\) but returns Yard\\Data\\PostData.#'
             path: src/PostData.php
             count: 1
+        -
+            message: '#Parameter \#1 $user of static method Yard\\Data\\UserData::fromUser\(\) expects WP_User, WP_User|false given.#'
+            path: src/PostData.php
+            count: 2
+        -
+            message: '#Parameter \#1 $user of static method Yard\\Data\\UserData::fromUser\(\) expects WP_User, WP_User|false given.#'
+            path: src/CommentData.php
+            count: 1
