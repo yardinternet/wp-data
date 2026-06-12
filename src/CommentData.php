@@ -36,8 +36,6 @@ class CommentData extends Data
 
 	public static function fromComment(\WP_Comment $comment): static
 	{
-		wp_cache_add_non_persistent_groups([self::CACHE_GROUP]);
-
 		$cachedCommentData = wp_cache_get($comment->comment_ID, self::CACHE_GROUP, false, $found);
 		if ($found && $cachedCommentData instanceof CommentData) {
 			return $cachedCommentData;

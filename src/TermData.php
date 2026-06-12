@@ -28,8 +28,6 @@ class TermData extends Data
 
 	public static function fromTerm(\WP_Term $term): TermData
 	{
-		wp_cache_add_non_persistent_groups([self::CACHE_GROUP]);
-
 		$cachedTermData = wp_cache_get($term->term_id, self::CACHE_GROUP, false, $found);
 		if ($found && $cachedTermData instanceof TermData) {
 			return $cachedTermData;

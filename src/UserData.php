@@ -15,6 +15,8 @@ use Yard\Data\Mappers\UserPrefixMapper;
 #[MapInputName(UserPrefixMapper::class)]
 class UserData extends Data implements Castable
 {
+	public const CACHE_GROUP = 'yard_user_data';
+
 	public function __construct(
 		#[MapInputName('ID')]
 		public int $id,
@@ -30,7 +32,7 @@ class UserData extends Data implements Castable
 
 	public static function fromUser(\WP_User $user): self
 	{
-		$cachedUserData = wp_cache_get($user->ID, 'yard_user_data', false, $found);
+		$cachedUserData = wp_cache_get($user->ID, self::CACHE_GROUP, false, $found);
 		if ($found && $cachedUserData instanceof UserData) {
 			return $cachedUserData;
 		}
@@ -43,7 +45,7 @@ class UserData extends Data implements Castable
 			email: $user->user_email,
 			displayName: $user->display_name,
 		);
-		wp_cache_set($user->ID, $userData, 'yard_user_data');
+		wp_cache_set($user->ID, $userData, self::CACHE_GROUP);
 
 		return $userData;
 	}
