@@ -11,6 +11,8 @@ use Yard\Data\Traits\HasMeta;
 /** @phpstan-consistent-constructor */
 class CommentData extends Data
 {
+	public const CACHE_GROUP = 'yard_comment_data';
+
 	use HasMeta;
 
 	public function __construct(
@@ -34,7 +36,12 @@ class CommentData extends Data
 
 	public static function fromComment(\WP_Comment $comment): static
 	{
-		return new static(
+		$cachedCommentData = wp_cache_get($comment->comment_ID, self::CACHE_GROUP, false, $found);
+		if ($found && $cachedCommentData instanceof CommentData) {
+			return $cachedCommentData;
+		}
+
+		$commentData = new static(
 			id: (int) $comment->comment_ID,
 			post: 0 !== (int) $comment->comment_post_ID && null !== get_post((int)$comment->comment_post_ID) ? PostData::fromPost(get_post((int)$comment->comment_post_ID)) : null,
 			author: $comment->comment_author,
@@ -48,7 +55,10 @@ class CommentData extends Data
 			agent: $comment->comment_agent,
 			type: $comment->comment_type,
 			parent: 0 !== (int) $comment->comment_parent && null !== get_comment((int) $comment->comment_parent) ? CommentData::fromComment(get_comment((int) $comment->comment_parent)) : null,
-			user: 0 !== (int) $comment->user_id && false !== get_userdata((int) $comment->user_id) ? UserData::fromUser(get_userdata((int) $comment->user_id)) : null,
+			user: 0 !== (int) $comment->user_id && false !== \WP_User::get_data_by('id', (int) $comment->user_id) ? UserData::fromUser(get_userdata((int) $comment->user_id)) : null,
 		);
+		wp_cache_set($comment->comment_ID, $commentData, self::CACHE_GROUP);
+
+		return $commentData;
 	}
 }
