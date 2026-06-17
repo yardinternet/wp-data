@@ -27,7 +27,13 @@ trait HasMeta
 			$metaAttributes = $property->getAttributes(Meta::class);
 			foreach ($metaAttributes as $metaAttribute) {
 				$meta = $metaAttribute->newInstance();
+
+				$rawMetaValue = $meta->getValue($this->objectID(), $property->name, $this->metaPrefix(), false);
+				$metaValue = $this->castRawMetaValue($rawMetaValue, $propertyTypeName ?? '');
+
 				$metaValue = $meta->getValue($this->objectID(), $property->name, $this->metaPrefix());
+
+				$rawMetaValue = $meta->getValue($this->objectID(), $property->name, $this->metaPrefix(), false);
 				if (null === $metaValue || null === $propertyTypeName) {
 					continue;
 				}
@@ -37,8 +43,46 @@ trait HasMeta
 		}
 	}
 
+	private function castRawMetaValue(mixed $rawMetaValue, string $type): mixed
+	{
+		if (is_a($type, PostData::class, true) && is_int($rawMetaValue)) {
+			$post = get_post($rawMetaValue);
+			if (! $post) {
+				return null;
+			}
+
+			return PostData::fromPost($post);
+		}
+
+		if (is_a($type, CarbonImmutable::class, true) && is_string($rawMetaValue)) {
+			if (CarbonImmutable::canBeCreatedFromFormat($rawMetaValue, 'Ymd')) {
+				return CarbonImmutable::createFromFormat('Ymd', $rawMetaValue);
+			}
+			if (CarbonImmutable::canBeCreatedFromFormat($rawMetaValue, 'Y-m-d H:i:s')) {
+				return CarbonImmutable::createFromFormat('Y-m-d H:i:s', $rawMetaValue);
+			} else {
+				return CarbonImmutable::parse($rawMetaValue);
+			}
+		}
+
+		if (is_a($type, \BackedEnum::class, true) && (is_int($rawMetaValue) || is_string($rawMetaValue))) {
+			return $type::from($rawMetaValue);
+		}
+
+		return $rawMetaValue;
+	}
+
 	private function castValue(mixed $value, string $type): mixed
 	{
+		if (is_a($type, PostData::class, true) && is_int($value)) {
+			$post = get_post($value);
+			if (! $post) {
+				return null;
+			}
+
+			return PostData::fromPost($post);
+		}
+
 		if (is_a($type, Data::class, true)) {
 			return $type::from($value);
 		}
