@@ -289,6 +289,7 @@ class PostData extends Data implements PostDataInterface
 		$args = wp_parse_args($args, [
 			'post_parent' => $this->id,
 			'post_type' => $this->postType,
+			'post_status' => 'publish',
 			'order' => 'ASC',
 			'orderby' => 'menu_order',
 		]);

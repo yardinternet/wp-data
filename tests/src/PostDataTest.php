@@ -59,3 +59,53 @@ it('returns an empty string when url does not exist', function () {
 
 	expect($this->postData->url())->toBe('');
 });
+
+it('only queries published children', function () {
+	\WP_Mock::userFunction('is_post_type_hierarchical', [
+		'args' => ['post'],
+		'return' => true,
+	]);
+
+	\WP_Mock::userFunction('wp_parse_args', [
+		'return' => fn (array $args, array $defaults): array => array_merge($defaults, $args),
+	]);
+
+	$queried = [];
+
+	\WP_Mock::userFunction('get_children', [
+		'return' => function (array $args) use (&$queried): array {
+			$queried = $args;
+
+			return [];
+		},
+	]);
+
+	$this->postData->children();
+
+	expect($queried['post_status'])->toBe('publish');
+});
+
+it('lets callers override the child post status', function () {
+	\WP_Mock::userFunction('is_post_type_hierarchical', [
+		'args' => ['post'],
+		'return' => true,
+	]);
+
+	\WP_Mock::userFunction('wp_parse_args', [
+		'return' => fn (array $args, array $defaults): array => array_merge($defaults, $args),
+	]);
+
+	$queried = [];
+
+	\WP_Mock::userFunction('get_children', [
+		'return' => function (array $args) use (&$queried): array {
+			$queried = $args;
+
+			return [];
+		},
+	]);
+
+	$this->postData->children(['post_status' => 'any']);
+
+	expect($queried['post_status'])->toBe('any');
+});
