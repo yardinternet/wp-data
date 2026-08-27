@@ -309,7 +309,7 @@ class PostData extends Data implements PostDataInterface
 			return null;
 		}
 		$parent = get_post_parent($this->id);
-		if (null === $parent) {
+		if (null === $parent || 'publish' !== $parent->post_status) {
 			return null;
 		}
 

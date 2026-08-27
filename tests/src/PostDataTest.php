@@ -109,3 +109,18 @@ it('lets callers override the child post status', function () {
 
 	expect($queried['post_status'])->toBe('any');
 });
+
+it('has no parent when the parent is not published', function () {
+	\WP_Mock::userFunction('is_post_type_hierarchical', [
+		'args' => ['post'],
+		'return' => true,
+	]);
+
+	\WP_Mock::userFunction('get_post_parent', [
+		'args' => [1],
+		'return' => (object) ['ID' => 2, 'post_status' => 'draft'],
+	]);
+
+	expect($this->postData->parent())->toBeNull();
+	expect($this->postData->isChild())->toBeFalse();
+});
