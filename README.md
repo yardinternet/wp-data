@@ -5,6 +5,7 @@
 [![Tests](https://github.com/yardinternet/wp-data/actions/workflows/run-tests.yml/badge.svg?no-cache)](https://github.com/yardinternet/wp-data/actions/workflows/run-tests.yml)
 [![Code Coverage Badge](https://github.com/yardinternet/wp-data/blob/badges/coverage.svg)](https://github.com/yardinternet/wp-data/actions/workflows/badges.yml)
 [![Lines of Code Badge](https://github.com/yardinternet/wp-data/blob/badges/lines-of-code.svg)](https://github.com/yardinternet/wp-data/actions/workflows/badges.yml)
+![Packagist Dependency Version](https://img.shields.io/packagist/dependency-v/yard/data/php)
 
 Powerful data objects for WordPress.
 
