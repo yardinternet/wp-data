@@ -10,13 +10,6 @@
     },
     "platform": {
       "php": "8.2"
-    },
-    "audit": {
-      "ignore": {
-        "PKSA-mdq4-51ck-6kdq": "CRLF injection in default email rule (CVE-2026-48019); no fix for EOL Laravel 10, which this package requires until the Acorn 5 upgrade.",
-        "PKSA-3r5d-mb8f-1qw9": "Duplicate of CVE-2026-48019 via the FriendsOfPHP advisory database.",
-        "PKSA-m5cs-t1y6-qpcs": "Temporary signed URL path confusion; no fix for EOL Laravel 10, which this package requires until the Acorn 5 upgrade."
-      }
     }
   },
   "support": {
