@@ -34,6 +34,7 @@ class TestCase extends Orchestra
 	protected function getPackageProviders($app)
 	{
 		return [
+			'Spatie\LaravelData\LaravelDataServiceProvider',
 			'Yard\Data\Providers\DataServiceProvider',
 		];
 	}
