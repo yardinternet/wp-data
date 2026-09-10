@@ -13,6 +13,8 @@ class TermData extends Data
 {
 	use HasMeta;
 
+	public const CACHE_GROUP = 'yard_term_data';
+
 	public function __construct(
 		#[MapInputName('term_id')]
 		public int $id,
@@ -26,12 +28,20 @@ class TermData extends Data
 
 	public static function fromTerm(\WP_Term $term): TermData
 	{
-		return new static(
+		$cachedTermData = wp_cache_get($term->term_id, self::CACHE_GROUP, false, $found);
+		if ($found && $cachedTermData instanceof TermData) {
+			return $cachedTermData;
+		}
+
+		$termData = new static(
 			id: $term->term_id,
 			name: $term->name,
 			slug: $term->slug,
 			taxonomy: $term->taxonomy,
 			description: $term->description,
 		);
+		wp_cache_set($term->term_id, $termData, self::CACHE_GROUP);
+
+		return $termData;
 	}
 }

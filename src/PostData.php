@@ -31,6 +31,8 @@ class PostData extends Data implements PostDataInterface
 {
 	use HasMeta;
 
+	public const CACHE_GROUP = 'yard_post_data';
+
 	public function __construct(
 		#[MapInputName('ID')]
 		public ?int $id,
@@ -56,9 +58,14 @@ class PostData extends Data implements PostDataInterface
 
 	public static function fromPost(\WP_Post $post): static
 	{
-		return new (self::dataClass($post->post_type))(
+		$cachedPostData = wp_cache_get($post->ID, self::CACHE_GROUP, false, $found);
+		if ($found && $cachedPostData instanceof PostData) {
+			return $cachedPostData;
+		}
+
+		$postData = new (self::dataClass($post->post_type))(
 			id: $post->ID,
-			author: false !== get_userdata((int) $post->post_author) ? UserData::fromUser(get_userdata((int) $post->post_author)) : null,
+			author: false !== \WP_User::get_data_by('id', (int) $post->post_author) ? UserData::fromUser(get_userdata((int) $post->post_author)) : null,
 			title: $post->post_title,
 			content: $post->post_content,
 			excerpt: $post->post_excerpt,
@@ -70,13 +77,21 @@ class PostData extends Data implements PostDataInterface
 			thumbnail: get_post_thumbnail_id($post->ID) ? new ImageData(get_post_thumbnail_id($post->ID)) : null,
 			commentCount: post_type_supports($post->post_type, 'comments') ? (int) $post->comment_count : null,
 		);
+		wp_cache_set($post->ID, $postData, self::CACHE_GROUP);
+
+		return $postData;
 	}
 
 	public static function fromCorcel(Post $post): static
 	{
-		return new (self::dataClass($post->post_type))(
+		$cachedPostData = wp_cache_get($post->ID, self::CACHE_GROUP, false, $found);
+		if ($found && $cachedPostData instanceof PostData) {
+			return $cachedPostData;
+		}
+
+		$postData = new (self::dataClass($post->post_type))(
 			id: $post->ID,
-			author: false !== get_userdata($post->post_author) ? UserData::fromUser(get_userdata($post->post_author)) : null,
+			author: false !== \WP_User::get_data_by('id', $post->post_author) ? UserData::fromUser(get_userdata($post->post_author)) : null,
 			title: $post->post_title,
 			content: $post->post_content,
 			excerpt: $post->post_excerpt,
@@ -88,6 +103,9 @@ class PostData extends Data implements PostDataInterface
 			thumbnail: get_post_thumbnail_id($post->ID) ? new ImageData(get_post_thumbnail_id($post->ID)) : null,
 			commentCount: post_type_supports($post->post_type, 'comments') ? (int) $post->comment_count : null,
 		);
+		wp_cache_set($post->ID, $postData, 'yard_post_data');
+
+		return $postData;
 	}
 
 	/**
