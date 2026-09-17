@@ -98,13 +98,17 @@ class PostData extends Data implements PostDataInterface
 		$classes = config('yard-data.post_types', []);
 
 		if (is_array($classes) && array_key_exists($postType, $classes)) {
-			return $classes[$postType];
+			$classFQN = $classes[$postType];
+		} else {
+			$classFQN = get_all_post_type_supports($postType)['data-class'][0]['classFQN'] ?? null;
 		}
-
-		$classFQN = get_all_post_type_supports($postType)['data-class'][0]['classFQN'] ?? null;
 
 		if (null === $classFQN) {
 			return static::class;
+		}
+
+		if (! is_string($classFQN)) {
+			throw new RuntimeException(sprintf('The data class configured for post type "%s" must be a class-string.', $postType));
 		}
 
 		if (! class_exists($classFQN)) {
@@ -117,6 +121,11 @@ class PostData extends Data implements PostDataInterface
 
 		/** @var class-string<static> $classFQN */
 		return $classFQN;
+	}
+
+	private function objectID(): int
+	{
+		return $this->id ?? 0;
 	}
 
 	private function taxonomyPrefix(): string

@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 - Added: `ImageData::mimeType()` and `ImageData::fileSize()`
+- Fix: PHPStan errors
 
 ## [v2.0.0] - 2026-09-04
 

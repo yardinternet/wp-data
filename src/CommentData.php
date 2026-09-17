@@ -51,4 +51,9 @@ class CommentData extends Data
 			user: 0 !== (int) $comment->user_id && false !== get_userdata((int) $comment->user_id) ? UserData::fromUser(get_userdata((int) $comment->user_id)) : null,
 		);
 	}
+
+	private function objectID(): string
+	{
+		return 'comment_' . $this->id;
+	}
 }

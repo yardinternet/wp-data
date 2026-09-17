@@ -34,4 +34,9 @@ class TermData extends Data
 			description: $term->description,
 		);
 	}
+
+	private function objectID(): string
+	{
+		return $this->taxonomy . '_' . $this->id;
+	}
 }
