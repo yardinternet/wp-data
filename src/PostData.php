@@ -298,6 +298,7 @@ class PostData extends Data implements PostDataInterface
 		$args = wp_parse_args($args, [
 			'post_parent' => $this->id,
 			'post_type' => $this->postType,
+			'post_status' => 'publish',
 			'order' => 'ASC',
 			'orderby' => 'menu_order',
 		]);
@@ -317,7 +318,7 @@ class PostData extends Data implements PostDataInterface
 			return null;
 		}
 		$parent = get_post_parent($this->id);
-		if (null === $parent) {
+		if (null === $parent || 'publish' !== $parent->post_status) {
 			return null;
 		}
 
