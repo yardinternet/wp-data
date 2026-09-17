@@ -26,4 +26,30 @@ class ImageData extends Data
 	{
 		return wp_get_attachment_image_url((int) $this->id, $size) ?: '';
 	}
+
+	/**
+	 * @since NEXT
+	 */
+	public function mimeType(): string
+	{
+		$mimeType = get_post_mime_type((int) $this->id);
+
+		return is_string($mimeType) ? $mimeType : '';
+	}
+
+	/**
+	 * @since NEXT
+	 */
+	public function fileSize(): int
+	{
+		$file = get_attached_file((int) $this->id);
+
+		if (! is_string($file) || '' === $file || ! is_file($file)) {
+			return 0;
+		}
+
+		$fileSize = filesize($file);
+
+		return false !== $fileSize ? $fileSize : 0;
+	}
 }
