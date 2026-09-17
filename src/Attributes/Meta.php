@@ -16,11 +16,7 @@ class Meta
 	public function getValue(string|int $objectID, string $metaKey, string $prefix): mixed
 	{
 		if (isset($this->metaKey)) {
-			if ($value = \get_field($this->metaKey, $objectID)) {
-				return $value;
-			} else {
-				return null;
-			}
+			return \get_field($this->metaKey, $objectID);
 		}
 
 		$possibleKeys = [
@@ -31,7 +27,8 @@ class Meta
 		];
 
 		foreach ($possibleKeys as $key) {
-			if ($value = \get_field($key, $objectID)) {
+			$value = \get_field($key, $objectID);
+			if (null !== $value) {
 				return $value;
 			}
 		}
