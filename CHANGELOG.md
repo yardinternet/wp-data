@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [v2.1.0] - 2026-09-17
 
 - Added: `ImageData::mimeType()` and `ImageData::fileSize()`
 - Fix: PHPStan errors

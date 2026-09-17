@@ -69,7 +69,7 @@ trait HasMeta
 	/**
 	 * Return the object ID, or 0 when not provided by the consuming class.
 	 *
-	 * @since NEXT
+	 * @since 2.1.0
 	 */
 	private function objectID(): string|int
 	{

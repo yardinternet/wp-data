@@ -28,7 +28,7 @@ class ImageData extends Data
 	}
 
 	/**
-	 * @since NEXT
+	 * @since 2.1.0
 	 */
 	public function mimeType(): string
 	{
@@ -38,7 +38,7 @@ class ImageData extends Data
 	}
 
 	/**
-	 * @since NEXT
+	 * @since 2.1.0
 	 */
 	public function fileSize(): int
 	{
