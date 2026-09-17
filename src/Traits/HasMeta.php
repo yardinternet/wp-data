@@ -66,12 +66,12 @@ trait HasMeta
 		return $metaPrefixAttribute?->newInstance()->prefix ?? '';
 	}
 
-    /**
-     * Return the object ID, or 0 when not provided by the consuming class.
-     *
-     * @since NEXT
-     */
-    private function objectID(): string|int
+	/**
+	 * Return the object ID, or 0 when not provided by the consuming class.
+	 *
+	 * @since NEXT
+	 */
+	private function objectID(): string|int
 	{
 		return 0;
 	}
