@@ -8,9 +8,6 @@ use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Data;
 use Yard\Data\Attributes\Meta;
 use Yard\Data\Attributes\MetaPrefix;
-use Yard\Data\CommentData;
-use Yard\Data\PostData;
-use Yard\Data\TermData;
 
 trait HasMeta
 {
@@ -69,18 +66,13 @@ trait HasMeta
 		return $metaPrefixAttribute?->newInstance()->prefix ?? '';
 	}
 
-	private function objectID(): string|int
+    /**
+     * Return the object ID, or 0 when not provided by the consuming class.
+     *
+     * @since NEXT
+     */
+    private function objectID(): string|int
 	{
-		if (is_a($this, PostData::class)) {
-			return $this->id ?? 0;
-		}
-		if (is_a($this, TermData::class)) {
-			return $this->taxonomy . '_' . $this->id;
-		}
-		if (is_a($this, CommentData::class)) {
-			return 'comment_' . $this->id;
-		}
-
 		return 0;
 	}
 }
