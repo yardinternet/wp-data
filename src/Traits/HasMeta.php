@@ -8,6 +8,7 @@ use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Data;
 use Yard\Data\Attributes\Meta;
 use Yard\Data\Attributes\MetaPrefix;
+use Yard\Data\PostData;
 
 trait HasMeta
 {
